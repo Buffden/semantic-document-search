@@ -1,17 +1,35 @@
 # Semantic Document Search
 
-A Python implementation of semantic search using OpenAI embeddings.
+A Python implementation of semantic search using OpenAI embeddings, built to understand how meaning-based search works under the hood before reaching for a vector database or a framework.
 
-No vector database. No frameworks. Just embeddings, cosine similarity, and plain Python.
+Traditional keyword search finds documents that contain the exact words you typed. This project takes a different approach: it converts text into high-dimensional vectors that capture *meaning*, then finds documents that are semantically similar to your query — even if they share no words with it.
+
+Ask *"what foods are good for the heart"* and it returns chunks about unsaturated fats and the Mediterranean diet. No keyword match required.
+
+No vector database. No LangChain. Just OpenAI embeddings, NumPy cosine similarity, and plain Python.
+
 
 ---
 
 ## What It Does
 
-1. **Chunks** text documents into overlapping windows
-2. **Embeds** each chunk using OpenAI `text-embedding-3-small`
-3. **Stores** the vectors locally as JSON
-4. **Searches** by embedding a natural language query and returning the most semantically similar chunks
+<table>
+<tr>
+<td valign="top" width="55%">
+
+1. **Chunks** text documents into overlapping word windows so meaning is preserved at boundaries and no context is lost between splits
+2. **Embeds** each chunk by calling the OpenAI `text-embedding-3-small` API, producing a 1536-dimensional vector per chunk
+3. **Stores** the vectors alongside the original text in a local `embeddings.json` file, no database required
+4. **Searches** by embedding a natural language query using the same model, then ranking all stored chunks by cosine similarity and returning the top-K matches
+
+</td>
+<td valign="top" width="45%">
+
+![Pipeline](./diagrams/pipeline.svg)
+
+</td>
+</tr>
+</table>
 
 ---
 
@@ -36,8 +54,8 @@ semantic-document-search/
 │   ├── nutrition-and-health.txt
 │   └── space-exploration.txt
 ├── embed.py                # Load, chunk, embed documents → embeddings.json
-├── search.py               # Embed query + retrieve top-K chunks
-├── utils.py                # chunk_text helper
+├── search.py               # Embed query + retrieve top-K chunks by cosine similarity
+├── utils.py                # chunk_text and cosine_similarity helpers
 ├── pyproject.toml          # Project dependencies
 └── .env                    # API keys (not committed)
 ```
@@ -68,29 +86,50 @@ EMBEDDING_MODEL=text-embedding-3-small
 python3 embed.py
 
 # Step 2 — Search
-python3 search.py "your query here"
+python3 search.py
 ```
+
+The query is set in `search.py` main. Change it to anything you want to search for.
 
 ---
 
 ## Sample Output
 
-`embeddings.json` is generated locally and not committed. Each entry looks like:
+### Embeddings (`embeddings.json`)
+
+Generated locally and not committed. Each entry looks like:
 
 ```json
 [
   {
     "text": "Climate change refers to long-term shifts in global temperatures and weather patterns...",
     "embedding": [0.0021, -0.0342, 0.0187, "...1536 values total"]
-  },
-  {
-    "text": "The primary cause is the burning of fossil fuels such as coal, oil, and natural gas...",
-    "embedding": [0.0019, -0.0311, 0.0204, "...1536 values total"]
   }
 ]
 ```
 
-Each embedding is a 1536-dimensional vector produced by `text-embedding-3-small`. Chunks from the same document on the same topic will have vectors that point in similar directions — chunks from different topics will not.
+Each embedding is a 1536-dimensional vector produced by `text-embedding-3-small`.
+
+### Search results
+
+Query: `"what foods are good for the heart"`
+
+```
+Result 1 (score: 0.3571)
+Nutrition is the science of how food affects the body. The food we eat provides energy and
+the raw materials needed to build and repair tissues... Unsaturated fats found in olive oil,
+nuts, avocados, and fatty fish are associated with reduced risk of heart disease...
+
+Result 2 (score: 0.3143)
+The Mediterranean diet — rich in vegetables, fruit, whole grains, fish, and olive oil — is
+consistently associated with lower rates of heart disease, diabetes, and cognitive decline...
+
+Result 3 (score: 0.1786)
+Music also affects mood and stress. Slow, quiet music activates the parasympathetic nervous
+system, lowering heart rate and cortisol levels...
+```
+
+The top two results come from the nutrition document. Result 3 surfaces from the music document because it mentions "heart rate" — semantic search catches conceptual overlap, not just keyword matches.
 
 ---
 
