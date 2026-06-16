@@ -139,3 +139,9 @@ The top two results come from the nutrition document. Result 3 surfaces from the
 - **Cosine similarity** — measures the angle between vectors; direction encodes meaning, magnitude does not
 - **Chunking** — splits documents into overlapping windows so meaning isn't diluted or cut at boundaries
 - **Model consistency** — the same embedding model must be used for both documents and queries
+
+---
+
+## Diagrams
+
+The pipeline diagram is maintained as a PlantUML source file (`pipeline.puml`) and auto-exported to SVG on every push to main using [diagram-sync](https://www.npmjs.com/package/diagram-sync).
