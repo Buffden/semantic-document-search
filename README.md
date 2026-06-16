@@ -1,8 +1,8 @@
 # Semantic Document Search
 
-A Python implementation of semantic search using OpenAI embeddings — built as part of Week 6 of the AI Application Engineering roadmap (Phase 2: RAG and Document Intelligence).
+A Python implementation of semantic search using OpenAI embeddings.
 
-No vector database. No frameworks. Just embeddings, cosine similarity, and plain Python — so the mechanics are clear before adding infrastructure.
+No vector database. No frameworks. Just embeddings, cosine similarity, and plain Python.
 
 ---
 
@@ -72,8 +72,3 @@ python search.py "your query here"
 - **Chunking** — splits documents into overlapping windows so meaning isn't diluted or cut at boundaries
 - **Model consistency** — the same embedding model must be used for both documents and queries
 
----
-
-## Part of
-
-[AI Application Engineering Roadmap](https://github.com/Buffden/ai-application-engineering) — Phase 2: RAG and Document Intelligence
