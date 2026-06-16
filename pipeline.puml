@@ -2,7 +2,7 @@
 skinparam direction left to right
 skinparam backgroundColor #FAFAFA
 skinparam defaultFontName Arial
-skinparam defaultFontSize 14
+skinparam defaultFontSize 13
 skinparam ArrowColor #555555
 skinparam ArrowThickness 2
 skinparam linetype ortho
