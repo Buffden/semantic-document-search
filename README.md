@@ -13,10 +13,23 @@ No vector database. No LangChain. Just OpenAI embeddings, NumPy cosine similarit
 
 ## What It Does
 
-1. **Chunks** text documents into overlapping windows
-2. **Embeds** each chunk using OpenAI `text-embedding-3-small`
-3. **Stores** the vectors locally as JSON
-4. **Searches** by embedding a natural language query and returning the most semantically similar chunks
+<table>
+<tr>
+<td valign="top" width="55%">
+
+1. **Chunks** text documents into overlapping word windows so meaning is preserved at boundaries and no context is lost between splits
+2. **Embeds** each chunk by calling the OpenAI `text-embedding-3-small` API, producing a 1536-dimensional vector per chunk
+3. **Stores** the vectors alongside the original text in a local `embeddings.json` file, no database required
+4. **Searches** by embedding a natural language query using the same model, then ranking all stored chunks by cosine similarity and returning the top-K matches
+
+</td>
+<td valign="top" width="45%">
+
+![Pipeline](./diagrams/pipeline.svg)
+
+</td>
+</tr>
+</table>
 
 ---
 

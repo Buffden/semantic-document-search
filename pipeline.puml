@@ -1,0 +1,53 @@
+@startuml pipeline
+skinparam direction left to right
+skinparam backgroundColor #FAFAFA
+skinparam defaultFontName Arial
+skinparam defaultFontSize 13
+skinparam ArrowColor #555555
+skinparam ArrowThickness 2
+skinparam linetype ortho
+
+skinparam rectangle {
+    BackgroundColor #EFF6FF
+    BorderColor #3B82F6
+    FontColor #1E3A8A
+    RoundCorner 12
+}
+
+skinparam database {
+    BackgroundColor #FEF9C3
+    BorderColor #EAB308
+    FontColor #713F12
+}
+
+skinparam usecase {
+    BackgroundColor #F0FDF4
+    BorderColor #22C55E
+    FontColor #14532D
+}
+
+package "Indexing — embed.py" #EEF2FF {
+    folder "documents/" as docs
+    rectangle "chunk_text\n300 words · 50 overlap" as chunk
+    rectangle "embed_chunks\nOpenAI API" as embed
+    database "embeddings.json" as store
+
+    docs --> chunk
+    chunk --> embed
+    embed --> store
+}
+
+package "Search — search.py" #FDF4FF {
+    usecase "Query" as query
+    rectangle "embed_query\nOpenAI API" as embedq
+    rectangle "cosine_similarity\nvs all chunks" as cosine
+    usecase "Top-K Results" as results
+
+    query --> embedq
+    embedq --> cosine
+    cosine --> results
+}
+
+store --> cosine
+
+@enduml
