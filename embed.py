@@ -17,6 +17,9 @@ def embed_chunks(chunks: list[str]) -> list[dict]:
 
     return [{"text": chunk, "embedding": response.data[i].embedding} for i, chunk in enumerate(chunks)]
 
+def embed_query(query: str) -> list[float]:
+    return embed_chunks([query])[0]["embedding"]
+
 def load_document(filepath: str) -> str:
     try:
         with open(filepath, 'r') as f:
