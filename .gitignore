@@ -10,3 +10,8 @@ venv/
 
 # Generated
 embeddings.json
+
+# Package build artifacts
+*.egg-info/
+dist/
+build/
