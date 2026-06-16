@@ -1,8 +1,13 @@
 # Semantic Document Search
 
-A Python implementation of semantic search using OpenAI embeddings.
+A Python implementation of semantic search using OpenAI embeddings, built to understand how meaning-based search works under the hood before reaching for a vector database or a framework.
 
-No vector database. No frameworks. Just embeddings, cosine similarity, and plain Python.
+Traditional keyword search finds documents that contain the exact words you typed. This project takes a different approach: it converts text into high-dimensional vectors that capture *meaning*, then finds documents that are semantically similar to your query — even if they share no words with it.
+
+Ask *"what foods are good for the heart"* and it returns chunks about unsaturated fats and the Mediterranean diet. No keyword match required.
+
+No vector database. No LangChain. Just OpenAI embeddings, NumPy cosine similarity, and plain Python.
+
 
 ---
 
