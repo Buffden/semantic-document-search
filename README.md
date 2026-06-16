@@ -21,6 +21,7 @@ No vector database. No frameworks. Just embeddings, cosine similarity, and plain
 - OpenAI SDK (`text-embedding-3-small`)
 - NumPy (cosine similarity)
 - Plain JSON (storage)
+- python-dotenv
 
 ---
 
@@ -28,11 +29,17 @@ No vector database. No frameworks. Just embeddings, cosine similarity, and plain
 
 ```
 semantic-document-search/
-├── documents/          # Sample .txt files to embed
-├── embeddings.json     # Stored chunk embeddings (generated)
-├── embed.py            # Chunk + embed documents
-├── search.py           # Embed query + retrieve top-K chunks
-└── utils.py            # Chunking and cosine similarity helpers
+├── documents/              # Sample .txt files to embed
+│   ├── ancient-rome.txt
+│   ├── climate-change.txt
+│   ├── music-and-the-brain.txt
+│   ├── nutrition-and-health.txt
+│   └── space-exploration.txt
+├── embed.py                # Load, chunk, embed documents → embeddings.json
+├── search.py               # Embed query + retrieve top-K chunks
+├── utils.py                # chunk_text helper
+├── pyproject.toml          # Project dependencies
+└── .env                    # API keys (not committed)
 ```
 
 ---
@@ -40,15 +47,16 @@ semantic-document-search/
 ## Setup
 
 ```bash
-python -m venv .venv
+python3 -m venv .venv
 source .venv/bin/activate
-pip install openai numpy python-dotenv
+pip install -e .
 ```
 
 Create a `.env` file:
 
 ```
 OPENAI_API_KEY=sk-...
+EMBEDDING_MODEL=text-embedding-3-small
 ```
 
 ---
@@ -56,12 +64,33 @@ OPENAI_API_KEY=sk-...
 ## Usage
 
 ```bash
-# Embed all documents
-python embed.py
+# Step 1 — Embed all documents (generates embeddings.json)
+python3 embed.py
 
-# Search
-python search.py "your query here"
+# Step 2 — Search
+python3 search.py "your query here"
 ```
+
+---
+
+## Sample Output
+
+`embeddings.json` is generated locally and not committed. Each entry looks like:
+
+```json
+[
+  {
+    "text": "Climate change refers to long-term shifts in global temperatures and weather patterns...",
+    "embedding": [0.0021, -0.0342, 0.0187, "...1536 values total"]
+  },
+  {
+    "text": "The primary cause is the burning of fossil fuels such as coal, oil, and natural gas...",
+    "embedding": [0.0019, -0.0311, 0.0204, "...1536 values total"]
+  }
+]
+```
+
+Each embedding is a 1536-dimensional vector produced by `text-embedding-3-small`. Chunks from the same document on the same topic will have vectors that point in similar directions — chunks from different topics will not.
 
 ---
 
@@ -71,4 +100,3 @@ python search.py "your query here"
 - **Cosine similarity** — measures the angle between vectors; direction encodes meaning, magnitude does not
 - **Chunking** — splits documents into overlapping windows so meaning isn't diluted or cut at boundaries
 - **Model consistency** — the same embedding model must be used for both documents and queries
-
