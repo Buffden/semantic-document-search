@@ -2,8 +2,6 @@
 
 A progressive RAG system built from first principles -- from raw embeddings and cosine similarity all the way to a full retrieval-augmented generation pipeline with document ingestion, reranking, and cited answers.
 
-Each phase extends the previous one. No framework magic -- just Python, OpenAI, and deliberate tooling choices at each layer.
-
 ---
 
 ## What It Does (Current State)
