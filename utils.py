@@ -1,5 +1,22 @@
 import numpy as np
 
+
+def load_document(filepath: str) -> str:
+    try:
+        with open(filepath, 'r') as f:
+            return f.read()
+    except FileNotFoundError as e:
+        raise FileNotFoundError(f"Document not found: {filepath}: {e}")
+
+
+def load_documents(directory: str) -> list[dict]:
+    import os
+    documents = []
+    for filename in filter(lambda f: f.endswith('.txt'), os.listdir(directory)):
+        filepath = os.path.join(directory, filename)
+        documents.append({"filename": filename, "text": load_document(filepath)})
+    return documents
+
 def chunk_text(text: str, chunk_size: int = 300, overlap: int = 50) -> list[str]:
     words = text.split()
     step = chunk_size - overlap

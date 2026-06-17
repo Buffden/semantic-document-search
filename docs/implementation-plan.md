@@ -58,7 +58,7 @@ The chunking and embedding logic from Phase 1 carries over unchanged. The only t
 
 - `chromadb` -- local persistent vector database
 
-**Status:** In Progress
+**Status:** Complete
 
 **Vector DB tradeoffs to understand:**
 

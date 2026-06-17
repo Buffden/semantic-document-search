@@ -11,7 +11,11 @@ venv/
 # Generated
 embeddings.json
 
+# Vector database storage
+chroma_db/
+
 # Package build artifacts
 *.egg-info/
 dist/
 build/
+*.dist-info/
