@@ -1,0 +1,60 @@
+@startuml pipeline-phase2
+
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Arial
+skinparam defaultFontSize 13
+skinparam ArrowColor #555555
+skinparam componentStyle rectangle
+
+skinparam component {
+  BackgroundColor #EEF3FB
+  BorderColor #5577AA
+  FontColor #222222
+}
+
+skinparam database {
+  BackgroundColor #FFF8E7
+  BorderColor #CC9900
+}
+
+skinparam cloud {
+  BackgroundColor #F0FFF0
+  BorderColor #448844
+}
+
+title Phase 2 -- Chroma Vector Store Pipeline
+
+package "Ingestion (ingest.py)" {
+  [.txt files] as docs
+  [load_documents()] as load
+  [chunk_text()] as chunk
+  [embed_chunks()] as embed
+}
+
+cloud "OpenAI API\ntext-embedding-3-small" as openai
+
+database "Chroma DB\n(persistent)" as chroma
+
+package "Search (search.py)" {
+  [Query] as query
+  [embed_query()] as embedq
+  [collection.query()] as cquery
+  [Top-K Results\n(text + source + distance)] as results
+}
+
+docs --> load
+load --> chunk
+chunk --> embed
+embed --> openai : API call
+openai --> embed : 1536-dim vectors
+embed --> chroma : upsert with\nids + metadata
+
+query --> embedq
+embedq --> openai : API call
+openai --> embedq : query vector
+embedq --> cquery
+cquery --> chroma : ANN search
+chroma --> cquery : nearest vectors
+cquery --> results
+
+@enduml

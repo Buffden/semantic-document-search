@@ -1,31 +1,40 @@
-import json
-from utils import chunk_text, cosine_similarity
-from embed import embed_chunks, embed_query
+from embed import embed_query
+import chromadb
 
-def load_embedded_response() -> list[dict]:
-    try:
-        with open('embeddings.json', 'r') as f:
-            return json.load(f)
-    except FileNotFoundError as e:
-        raise FileNotFoundError(f"File not found") 
+client = chromadb.PersistentClient(path="./chroma_db")
+
 
 def search(query: str, top_k: int = 3) -> list[dict]:
-    embedded_response = load_embedded_response()
+    collection = client.get_or_create_collection(name="documents")
     query_vector = embed_query(query)
 
-    scored = [
-        {"text": chunk["text"], "score": cosine_similarity(query_vector, chunk["embedding"])}
-        for chunk in embedded_response
+    results = collection.query(
+        query_embeddings = [query_vector],
+        n_results = top_k,
+        include = ["documents", "metadatas", "distances"]
+    )
+
+    return [
+        {
+            "text": results["documents"][0][i],
+            "source": results["metadatas"][0][i]["source"],
+            "chunk_index": results["metadatas"][0][i]["chunk_index"],
+            "distance": results["distances"][0][i]
+        }
+        for i in range(len(results["documents"][0]))
     ]
 
-    return sorted(scored, key = lambda x: x["score"], reverse = True)[:top_k]
 
 def main():
-    results = search("what foods are good for the heart")
+    query = "what foods are good for the heart"
+    results = search(query)
+
+    print(f"Query: \"{query}\"\n")
     for i, result in enumerate(results):
-        print(f"Result {i + 1} (score: {result['score']:.4f})")
+        print(f"Result {i + 1} (distance: {result['distance']:.4f}) — {result['source']} [chunk {result['chunk_index']}]")
         print(result["text"])
         print()
+
 
 if __name__ == '__main__':
     main()

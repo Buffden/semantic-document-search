@@ -6,6 +6,7 @@ dependencies = [
     "openai>=1.0.0",
     "python-dotenv>=1.0.0",
     "numpy>=1.26.0",
+    "chromadb>=1.5.9"
 ]
 
 [tool.setuptools]
