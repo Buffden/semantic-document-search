@@ -1,5 +1,5 @@
 [project]
-name = "semantic-document-search"
+name = "rag-document-engine"
 version = "0.1.0"
 requires-python = ">=3.12"
 dependencies = [
@@ -7,3 +7,6 @@ dependencies = [
     "python-dotenv>=1.0.0",
     "numpy>=1.26.0",
 ]
+
+[tool.setuptools]
+packages = []
