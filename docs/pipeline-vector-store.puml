@@ -3,60 +3,51 @@
 skinparam backgroundColor #FFFFFF
 skinparam defaultFontName Arial
 skinparam defaultFontSize 13
-skinparam ArrowColor #555555
-skinparam ArrowThickness 2
-skinparam componentStyle rectangle
-skinparam linetype ortho
+skinparam sequenceArrowThickness 2
+skinparam SequenceBoxBackgroundColor #F8F9FF
+skinparam SequenceBoxBorderColor #AABBDD
+skinparam ParticipantBackgroundColor #EEF3FB
+skinparam ParticipantBorderColor #5577AA
+skinparam ParticipantFontColor #222222
+skinparam DatabaseBackgroundColor #FFF8E7
+skinparam DatabaseBorderColor #CC9900
+skinparam ActorBackgroundColor #F0FFF0
+skinparam ActorBorderColor #448844
 
-skinparam component {
-  BackgroundColor #EEF3FB
-  BorderColor #5577AA
-  FontColor #222222
-}
+title Chroma Vector Store Pipeline
 
-skinparam database {
-  BackgroundColor #FFF8E7
-  BorderColor #CC9900
-}
+box "Ingestion" #EEF6FF
+  participant "load_documents()" as load
+  participant "chunk_text()" as chunk
+  participant "embed_chunks()" as embed
+end box
 
-skinparam cloud {
-  BackgroundColor #F0FFF0
-  BorderColor #448844
-}
+participant "OpenAI API" as openai
+database "Chroma DB" as chroma
 
-title Phase 2 -- Chroma Vector Store Pipeline
+box "Search" #FFF0F8
+  actor "Query" as query
+  participant "embed_query()" as embedq
+  participant "collection.query()" as cquery
+end box
 
-package "Ingestion (ingest.py)" {
-  [.txt files] as docs
-  [load_documents()] as load
-  [chunk_text()] as chunk
-  [embed_chunks()] as embed
-}
+== Ingestion ==
 
-cloud "OpenAI API\ntext-embedding-3-small" as openai
-
-database "Chroma DB\n(persistent)" as chroma
-
-package "Search (search.py)" {
-  [Query] as query
-  [embed_query()] as embedq
-  [collection.query()] as cquery
-  [Top-K Results\n(text + source + distance)] as results
-}
-
-docs --> load
-load --> chunk
-chunk --> embed
-embed --> openai : API call
+[-> load : .txt files
+load -> chunk : text
+chunk -> embed : chunks
+embed -> openai : embed request
 openai --> embed : 1536-dim vectors
-embed --> chroma : upsert with\nids + metadata
+embed -> chroma : upsert(ids, embeddings, metadata)
 
-query --> embedq
-embedq --> openai : API call
+== Search ==
+
+query -> embedq : query string
+embedq -> openai : embed request
 openai --> embedq : query vector
-embedq --> cquery
-cquery --> chroma : ANN search
+embedq -> cquery : query vector
+cquery -> chroma : ANN search
 chroma --> cquery : nearest vectors
-cquery --> results
+cquery --> query : Top-K results\n(text + source + distance)
 
 @enduml
