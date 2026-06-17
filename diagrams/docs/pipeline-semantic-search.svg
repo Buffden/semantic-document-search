@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="711px" preserveAspectRatio="none" style="width:494px;height:711px;background:#FAFAFA;" version="1.1" viewBox="0 0 494 711" width="494px" zoomAndPan="magnify"><defs><filter height="300%" id="f15fznf7d3y6ua" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><!--MD5=[ff4c7cbfc86cbafc5088fc7dc3b82e86]
+cluster Indexing — embed.py--><polygon fill="#EEF2FF" filter="url(#f15fznf7d3y6ua)" points="22,24,218,24,225,48.625,256,48.625,256,483.5,22,483.5,22,24" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="22" x2="225" y1="48.625" y2="48.625"/><text fill="#000000" font-family="Arial" font-size="16" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="190" x="26" y="40.8516">Indexing — embed.py</text><!--MD5=[b7354f1b6b1a4ce6b3292a1a387e6ba1]
+cluster Search — search.py--><polygon fill="#FDF4FF" filter="url(#f15fznf7d3y6ua)" points="280,273.5,462,273.5,469,298.125,472,298.125,472,699,280,699,280,273.5" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="280" x2="469" y1="298.125" y2="298.125"/><text fill="#000000" font-family="Arial" font-size="16" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="176" x="284" y="290.3516">Search — search.py</text><!--MD5=[57a5b41ed6b3ba96fe9b4a740eb3fdc7]
+entity docs--><polygon fill="#FEFECE" filter="url(#f15fznf7d3y6ua)" points="77.5,61,123.5,61,130.5,82,200.5,82,200.5,121.25,77.5,121.25,77.5,61" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="77.5" x2="130.5" y1="82" y2="82"/><text fill="#000000" font-family="Arial" font-size="16" lengthAdjust="spacingAndGlyphs" textLength="93" x="87.5" y="103.8516">documents/</text><!--MD5=[ff858b2fa29ed35ae3d882895b3a15f0]
+entity chunk--><rect fill="#EFF6FF" filter="url(#f15fznf7d3y6ua)" height="57.25" rx="6" ry="6" style="stroke: #3B82F6; stroke-width: 1.5;" width="201" x="38.5" y="181"/><text fill="#1E3A8A" font-family="Arial" font-size="16" lengthAdjust="spacingAndGlyphs" textLength="87" x="48.5" y="205.8516">chunk_text</text><text fill="#1E3A8A" font-family="Arial" font-size="16" lengthAdjust="spacingAndGlyphs" textLength="181" x="48.5" y="224.4766">300 words · 50 overlap</text><!--MD5=[1a7a766028402bec58ce31452d7a7648]
+entity embed--><rect fill="#EFF6FF" filter="url(#f15fznf7d3y6ua)" height="57.25" rx="6" ry="6" style="stroke: #3B82F6; stroke-width: 1.5;" width="138" x="76" y="298"/><text fill="#1E3A8A" font-family="Arial" font-size="16" lengthAdjust="spacingAndGlyphs" textLength="118" x="86" y="322.8516">embed_chunks</text><text fill="#1E3A8A" font-family="Arial" font-size="16" lengthAdjust="spacingAndGlyphs" textLength="89" x="86" y="341.4766">OpenAI API</text><!--MD5=[0686720d71d32ea68f81164171d509ce]
+entity store--><path d="M81,429.5 C81,419.5 157,419.5 157,419.5 C157,419.5 233,419.5 233,429.5 L233,457.125 C233,467.125 157,467.125 157,467.125 C157,467.125 81,467.125 81,457.125 L81,429.5 " fill="#FEF9C3" filter="url(#f15fznf7d3y6ua)" style="stroke: #EAB308; stroke-width: 1.5;"/><path d="M81,429.5 C81,439.5 157,439.5 157,439.5 C157,439.5 233,439.5 233,429.5 " fill="none" style="stroke: #EAB308; stroke-width: 1.5;"/><text fill="#713F12" font-family="Arial" font-size="16" lengthAdjust="spacingAndGlyphs" textLength="132" x="91" y="458.3516">embeddings.json</text><ellipse cx="368.9411" cy="326.6699" fill="#F0FDF4" filter="url(#f15fznf7d3y6ua)" rx="36.9411" ry="16.1699" style="stroke: #22C55E; stroke-width: 1.5;"/><text fill="#14532D" font-family="Arial" font-size="16" lengthAdjust="spacingAndGlyphs" textLength="48" x="344.9411" y="332.4824">Query</text><!--MD5=[81edeb3f3a35c1dab7f46e9decfdfebe]
+entity embedq--><rect fill="#EFF6FF" filter="url(#f15fznf7d3y6ua)" height="57.25" rx="6" ry="6" style="stroke: #3B82F6; stroke-width: 1.5;" width="126" x="306" y="415"/><text fill="#1E3A8A" font-family="Arial" font-size="16" lengthAdjust="spacingAndGlyphs" textLength="106" x="316" y="439.8516">embed_query</text><text fill="#1E3A8A" font-family="Arial" font-size="16" lengthAdjust="spacingAndGlyphs" textLength="89" x="316" y="458.4766">OpenAI API</text><!--MD5=[3db17c234f6b9cf849b9b762d4cff762]
+entity cosine--><rect fill="#EFF6FF" filter="url(#f15fznf7d3y6ua)" height="57.25" rx="6" ry="6" style="stroke: #3B82F6; stroke-width: 1.5;" width="145" x="296.5" y="532"/><text fill="#1E3A8A" font-family="Arial" font-size="16" lengthAdjust="spacingAndGlyphs" textLength="125" x="306.5" y="556.8516">cosine_similarity</text><text fill="#1E3A8A" font-family="Arial" font-size="16" lengthAdjust="spacingAndGlyphs" textLength="100" x="306.5" y="575.4766">vs all chunks</text><ellipse cx="369.9247" cy="666.1849" fill="#F0FDF4" filter="url(#f15fznf7d3y6ua)" rx="73.9247" ry="17.1849" style="stroke: #22C55E; stroke-width: 1.5;"/><text fill="#14532D" font-family="Arial" font-size="16" lengthAdjust="spacingAndGlyphs" textLength="107" x="316.4247" y="671.9974">Top-K Results</text><!--MD5=[58d0584bf00a192df52be675af4060c3]
+link docs to chunk--><path d="M139,121.21 C139,121.21 139,175.98 139,175.98 " fill="none" id="docs-&gt;chunk" style="stroke: #555555; stroke-width: 2.0;"/><polygon fill="#555555" points="139,180.98,143,171.98,139,175.98,135,171.98,139,180.98" style="stroke: #555555; stroke-width: 2.0;"/><!--MD5=[f719c65e3cd5877eb9f397b030baf6d1]
+link chunk to embed--><path d="M145,238.12 C145,238.12 145,292.77 145,292.77 " fill="none" id="chunk-&gt;embed" style="stroke: #555555; stroke-width: 2.0;"/><polygon fill="#555555" points="145,297.77,149,288.77,145,292.77,141,288.77,145,297.77" style="stroke: #555555; stroke-width: 2.0;"/><!--MD5=[3fff7060fd0c4e8b3dcde3a0a24b4cc6]
+link embed to store--><path d="M147.5,355.12 C147.5,355.12 147.5,414.13 147.5,414.13 " fill="none" id="embed-&gt;store" style="stroke: #555555; stroke-width: 2.0;"/><polygon fill="#555555" points="147.5,419.13,151.5,410.13,147.5,414.13,143.5,410.13,147.5,419.13" style="stroke: #555555; stroke-width: 2.0;"/><!--MD5=[8efdc581dcc4934b230519e9a1c62620]
+link query to embedq--><path d="M369,342.77 C369,342.77 369,409.77 369,409.77 " fill="none" id="query-&gt;embedq" style="stroke: #555555; stroke-width: 2.0;"/><polygon fill="#555555" points="369,414.77,373,405.77,369,409.77,365,405.77,369,414.77" style="stroke: #555555; stroke-width: 2.0;"/><!--MD5=[07d0e59a576869aa907c1b73aa635231]
+link embedq to cosine--><path d="M369,472.12 C369,472.12 369,526.77 369,526.77 " fill="none" id="embedq-&gt;cosine" style="stroke: #555555; stroke-width: 2.0;"/><polygon fill="#555555" points="369,531.77,373,522.77,369,526.77,365,522.77,369,531.77" style="stroke: #555555; stroke-width: 2.0;"/><!--MD5=[4684471f6051558c3413dfb8791f28b5]
+link cosine to results--><path d="M369,589.05 C369,589.05 369,643.97 369,643.97 " fill="none" id="cosine-&gt;results" style="stroke: #555555; stroke-width: 2.0;"/><polygon fill="#555555" points="369,648.97,373,639.97,369,643.97,365,639.97,369,648.97" style="stroke: #555555; stroke-width: 2.0;"/><!--MD5=[a0c1a4ea2fae617c4a25a3db61a81add]
+link store to cosine--><path d="M233.35,444 C267.95,444 301.25,444 301.25,444 C301.25,444 301.25,526.7 301.25,526.7 " fill="none" id="store-&gt;cosine" style="stroke: #555555; stroke-width: 2.0;"/><polygon fill="#555555" points="301.25,531.7,305.25,522.7,301.25,526.7,297.25,522.7,301.25,531.7" style="stroke: #555555; stroke-width: 2.0;"/><!--MD5=[0908e850b64861f3dab49d4260b5d6e0]
+@startuml pipeline-semantic-search
+skinparam direction left to right
+skinparam backgroundColor #FAFAFA
+skinparam defaultFontName Arial
+skinparam defaultFontSize 16
+skinparam ArrowColor #555555
+skinparam ArrowThickness 2
+skinparam linetype ortho
+
+skinparam rectangle {
+    BackgroundColor #EFF6FF
+    BorderColor #3B82F6
+    FontColor #1E3A8A
+    RoundCorner 12
+}
+
+skinparam database {
+    BackgroundColor #FEF9C3
+    BorderColor #EAB308
+    FontColor #713F12
+}
+
+skinparam usecase {
+    BackgroundColor #F0FDF4
+    BorderColor #22C55E
+    FontColor #14532D
+}
+
+package "Indexing — embed.py" #EEF2FF {
+    folder "documents/" as docs
+    rectangle "chunk_text\n300 words · 50 overlap" as chunk
+    rectangle "embed_chunks\nOpenAI API" as embed
+    database "embeddings.json" as store
+
+    docs - -> chunk
+    chunk - -> embed
+    embed - -> store
+}
+
+package "Search — search.py" #FDF4FF {
+    usecase "Query" as query
+    rectangle "embed_query\nOpenAI API" as embedq
+    rectangle "cosine_similarity\nvs all chunks" as cosine
+    usecase "Top-K Results" as results
+
+    query - -> embedq
+    embedq - -> cosine
+    cosine - -> results
+}
+
+store - -> cosine
+
+@enduml
+
+PlantUML version 1.2020.02(Sun Mar 01 10:22:07 UTC 2020)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Java Version: 17.0.19+10
+Operating System: Linux
+Default Encoding: UTF-8
+Language: en
+Country: null
+--></g></svg>
