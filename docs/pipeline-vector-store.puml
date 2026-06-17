@@ -2,7 +2,7 @@
 
 skinparam backgroundColor #FFFFFF
 skinparam defaultFontName Arial
-skinparam defaultFontSize 13
+skinparam defaultFontSize 16
 skinparam sequenceArrowThickness 2
 skinparam SequenceBoxBackgroundColor #F8F9FF
 skinparam SequenceBoxBorderColor #AABBDD
@@ -50,4 +50,5 @@ cquery -> chroma : ANN search
 chroma --> cquery : nearest vectors
 cquery --> query : Top-K results\n(text + source + distance)
 
+' end
 @enduml

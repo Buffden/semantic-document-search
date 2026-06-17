@@ -2,7 +2,7 @@
 skinparam direction left to right
 skinparam backgroundColor #FAFAFA
 skinparam defaultFontName Arial
-skinparam defaultFontSize 13
+skinparam defaultFontSize 16
 skinparam ArrowColor #555555
 skinparam ArrowThickness 2
 skinparam linetype ortho
@@ -50,4 +50,5 @@ package "Search — search.py" #FDF4FF {
 
 store --> cosine
 
+' end
 @enduml
