@@ -120,6 +120,8 @@ The top two results come from the nutrition document. Result 3 surfaces from the
 | 3 | RAG Pipeline | Planned |
 | 4 | Document Ingestion | Planned |
 | 5 | Retrieval Quality | Planned |
+| 6 | Search and Chat Mode | Planned |
+| 7 | Role-Based Document Access | Planned |
 
 See [docs/implementation-plan.md](./docs/implementation-plan.md) for full phase details, tasks, and build notes.
 
