@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentScriptType="application/ecmascript" contentStyleType="text/css" height="668px" preserveAspectRatio="none" style="width:858px;height:668px;" version="1.1" viewBox="0 0 858 668" width="858px" zoomAndPan="magnify"><defs><filter height="300%" id="fha5baksoolmi" width="300%" x="-1" y="-1"><feGaussianBlur result="blurOut" stdDeviation="2.0"/><feColorMatrix in="blurOut" result="blurOut2" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .4 0"/><feOffset dx="4.0" dy="4.0" in="blurOut2" result="blurOut3"/><feBlend in="SourceGraphic" in2="blurOut3" mode="normal"/></filter></defs><g><text fill="#000000" font-family="Arial" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="258" x="299.5" y="12.0669">Phase 2 -- Chroma Vector Store Pipeline</text><!--MD5=[d43075e66b9401f5f099c90dff66d346]
+cluster Ingestion (ingest.py)--><polygon fill="#FFFFFF" filter="url(#fha5baksoolmi)" points="22,39.6328,182,39.6328,189,60.7656,192,60.7656,192,497.1328,22,497.1328,22,39.6328" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="22" x2="189" y1="60.7656" y2="60.7656"/><text fill="#000000" font-family="Arial" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="154" x="26" y="53.6997">Ingestion (ingest.py)</text><!--MD5=[eee07272e247f727b0c9cb5ea2910cc3]
+cluster Search (search.py)--><polygon fill="#FFFFFF" filter="url(#fha5baksoolmi)" points="216,173.6328,361,173.6328,368,194.7656,438,194.7656,438,656.1328,216,656.1328,216,173.6328" style="stroke: #000000; stroke-width: 1.5;"/><line style="stroke: #000000; stroke-width: 1.5;" x1="216" x2="368" y1="194.7656" y2="194.7656"/><text fill="#000000" font-family="Arial" font-size="13" font-weight="bold" lengthAdjust="spacingAndGlyphs" textLength="139" x="220" y="187.6997">Search (search.py)</text><!--MD5=[57a5b41ed6b3ba96fe9b4a740eb3fdc7]
+entity docs--><rect fill="#EEF3FB" filter="url(#fha5baksoolmi)" height="35.1328" style="stroke: #5577AA; stroke-width: 1.5;" width="70" x="73" y="91.6328"/><rect fill="#EEF3FB" height="5" style="stroke: #5577AA; stroke-width: 1.5;" width="10" x="68" y="96.6328"/><rect fill="#EEF3FB" height="5" style="stroke: #5577AA; stroke-width: 1.5;" width="10" x="68" y="116.7656"/><text fill="#222222" font-family="Arial" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="50" x="83" y="113.6997">.txt files</text><!--MD5=[6fa1cc94bec0cf5ab264efe33d75d3c3]
+entity load--><rect fill="#EEF3FB" filter="url(#fha5baksoolmi)" height="35.1328" style="stroke: #5577AA; stroke-width: 1.5;" width="136" x="40" y="225.6328"/><rect fill="#EEF3FB" height="5" style="stroke: #5577AA; stroke-width: 1.5;" width="10" x="35" y="230.6328"/><rect fill="#EEF3FB" height="5" style="stroke: #5577AA; stroke-width: 1.5;" width="10" x="35" y="250.7656"/><text fill="#222222" font-family="Arial" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="116" x="50" y="247.6997">load_documents()</text><!--MD5=[ff858b2fa29ed35ae3d882895b3a15f0]
+entity chunk--><rect fill="#EEF3FB" filter="url(#fha5baksoolmi)" height="35.1328" style="stroke: #5577AA; stroke-width: 1.5;" width="100" x="59" y="321.6328"/><rect fill="#EEF3FB" height="5" style="stroke: #5577AA; stroke-width: 1.5;" width="10" x="54" y="326.6328"/><rect fill="#EEF3FB" height="5" style="stroke: #5577AA; stroke-width: 1.5;" width="10" x="54" y="346.7656"/><text fill="#222222" font-family="Arial" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="80" x="69" y="343.6997">chunk_text()</text><!--MD5=[1a7a766028402bec58ce31452d7a7648]
+entity embed--><rect fill="#EEF3FB" filter="url(#fha5baksoolmi)" height="35.1328" style="stroke: #5577AA; stroke-width: 1.5;" width="127" x="48.5" y="446.1328"/><rect fill="#EEF3FB" height="5" style="stroke: #5577AA; stroke-width: 1.5;" width="10" x="43.5" y="451.1328"/><rect fill="#EEF3FB" height="5" style="stroke: #5577AA; stroke-width: 1.5;" width="10" x="43.5" y="471.2656"/><text fill="#222222" font-family="Arial" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="107" x="58.5" y="468.1997">embed_chunks()</text><!--MD5=[a096c1983bcf686c95ea726f28f7a0ed]
+entity query--><rect fill="#EEF3FB" filter="url(#fha5baksoolmi)" height="35.1328" style="stroke: #5577AA; stroke-width: 1.5;" width="58" x="334" y="225.6328"/><rect fill="#EEF3FB" height="5" style="stroke: #5577AA; stroke-width: 1.5;" width="10" x="329" y="230.6328"/><rect fill="#EEF3FB" height="5" style="stroke: #5577AA; stroke-width: 1.5;" width="10" x="329" y="250.7656"/><text fill="#222222" font-family="Arial" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="38" x="344" y="247.6997">Query</text><!--MD5=[81edeb3f3a35c1dab7f46e9decfdfebe]
+entity embedq--><rect fill="#EEF3FB" filter="url(#fha5baksoolmi)" height="35.1328" style="stroke: #5577AA; stroke-width: 1.5;" width="118" x="304" y="321.6328"/><rect fill="#EEF3FB" height="5" style="stroke: #5577AA; stroke-width: 1.5;" width="10" x="299" y="326.6328"/><rect fill="#EEF3FB" height="5" style="stroke: #5577AA; stroke-width: 1.5;" width="10" x="299" y="346.7656"/><text fill="#222222" font-family="Arial" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="98" x="314" y="343.6997">embed_query()</text><!--MD5=[8fb73a19f8d09b32c502350ebb5d2be5]
+entity cquery--><rect fill="#EEF3FB" filter="url(#fha5baksoolmi)" height="35.1328" style="stroke: #5577AA; stroke-width: 1.5;" width="130" x="260" y="446.1328"/><rect fill="#EEF3FB" height="5" style="stroke: #5577AA; stroke-width: 1.5;" width="10" x="255" y="451.1328"/><rect fill="#EEF3FB" height="5" style="stroke: #5577AA; stroke-width: 1.5;" width="10" x="255" y="471.2656"/><text fill="#222222" font-family="Arial" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="110" x="270" y="468.1997">collection.query()</text><!--MD5=[b5cce2cdbd787adcd8934bb88f8254b3]
+entity results--><rect fill="#EEF3FB" filter="url(#fha5baksoolmi)" height="50.2656" style="stroke: #5577AA; stroke-width: 1.5;" width="190" x="232" y="590.1328"/><rect fill="#EEF3FB" height="5" style="stroke: #5577AA; stroke-width: 1.5;" width="10" x="227" y="595.1328"/><rect fill="#EEF3FB" height="5" style="stroke: #5577AA; stroke-width: 1.5;" width="10" x="227" y="630.3984"/><text fill="#222222" font-family="Arial" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="86" x="242" y="612.1997">Top-K Results</text><text fill="#222222" font-family="Arial" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="170" x="242" y="627.3325">(text + source + distance)</text><!--MD5=[d85c0a1eb646255ad28a1eb3e90eaa32]
+entity openai--><path d="M663.835,442.4894 C667.1277,435.2659 672.3414,436.1026 676.6173,441.4931 C680.0176,435.0792 685.7228,435.5954 689.0973,441.5192 C691.6705,436.9846 696.1511,436.5453 699.0845,441.1244 C702.7275,434.8774 708.3475,432.647 713.2868,439.7448 C716.5627,434.4833 722.0088,434.6406 724.5873,440.4563 C727.487,434.6172 731.4132,435.2085 735.3898,439.2829 C738.5809,431.7226 743.7931,431.3201 749.0607,437.1652 C752.9629,433.2862 757.0274,433.6585 759.4121,438.8895 C763.0709,432.484 769.0669,433.1716 771.662,439.8829 C775.101,434.1339 781.5417,433.03 784.9154,439.9511 C787.8691,434.6344 792.9245,435.6335 795.3463,440.4961 C800.1533,436.0428 804.3976,436.0124 807.2952,442.5685 C811.7915,435.1647 815.8976,436.1596 820.8024,442.1567 C824.0394,437.2752 829.2042,436.3206 832.5035,442.0882 C838.6991,443.41 841.1537,448.8893 836.0195,453.655 C842.5332,454.8929 844.7109,457.9631 842.3017,464.4121 C846.637,470.97 843.7827,475.527 836.2549,475.7682 C839.9568,481.3819 838.6597,485.5913 832.1783,487.7365 C828.7109,493.8966 823.9772,493.6881 819.7924,488.5208 C815.9591,494.4228 811.7036,494.2377 807.6621,488.7424 C805.6099,495.3442 799.7881,496.7766 795.0442,491.6344 C792.0953,496.906 788.2131,496.5461 785.1212,491.7758 C782.9264,497.8229 777.5868,499.4607 773.0484,494.3002 C769.5195,501.0609 764.8674,501.6812 760.0009,495.6662 C756.23,501.3552 752.3189,501.3978 748.9306,495.3066 C744.55,501.9554 739.8568,502.2077 735.6966,495.0946 C731.0645,499.8501 725.8767,499.4683 723.6526,492.5997 C720.7068,497.941 715.0143,498.0348 712.0471,492.6227 C707.5735,497.7266 702.9539,499.1638 699.1543,491.919 C695.1953,496.5972 691.1095,495.38 689.1504,489.9415 C685.0524,495.8668 679.5274,495.6227 676.2618,489.081 C672.0738,494.2949 666.8131,494.5433 663.7083,487.9311 C655.9358,484.8511 656.5839,480.5434 660.9809,474.9136 C654.3407,474.2883 653.4529,470.4153 655.8453,465.075 C651.93,459.4246 653.5013,454.3598 660.9438,453.8839 C657.0052,448.7166 657.3805,445.0196 663.835,442.4894 " fill="#F0FFF0" style="stroke: #448844; stroke-width: 1.5;"/><text fill="#000000" font-family="Arial" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="70" x="670" y="460.6997">OpenAI API</text><text fill="#000000" font-family="Arial" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="154" x="670" y="475.8325">text-embedding-3-small</text><!--MD5=[ba0e3141185c9f6ac85d8ff32b47afed]
+entity chroma--><path d="M103,595.6328 C103,585.6328 150,585.6328 150,585.6328 C150,585.6328 197,585.6328 197,595.6328 L197,634.8984 C197,644.8984 150,644.8984 150,644.8984 C150,644.8984 103,644.8984 103,634.8984 L103,595.6328 " fill="#FFF8E7" filter="url(#fha5baksoolmi)" style="stroke: #CC9900; stroke-width: 1.5;"/><path d="M103,595.6328 C103,605.6328 150,605.6328 150,605.6328 C150,605.6328 197,605.6328 197,595.6328 " fill="none" style="stroke: #CC9900; stroke-width: 1.5;"/><text fill="#000000" font-family="Arial" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="74" x="113" y="621.6997">Chroma DB</text><text fill="#000000" font-family="Arial" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="74" x="113" y="636.8325">(persistent)</text><!--MD5=[34aeeab8a23e75e12ac7d0294eef783a]
+link docs to load--><path d="M108,126.6528 C108,126.6528 108,220.6128 108,220.6128 " fill="none" id="docs-&gt;load" style="stroke: #555555; stroke-width: 2.0;"/><polygon fill="#555555" points="108,225.6128,112,216.6128,108,220.6128,104,216.6128,108,225.6128" style="stroke: #555555; stroke-width: 2.0;"/><!--MD5=[197124bfd89600884ad83f5bdb81fe2d]
+link load to chunk--><path d="M109,260.7428 C109,260.7428 109,316.3128 109,316.3128 " fill="none" id="load-&gt;chunk" style="stroke: #555555; stroke-width: 2.0;"/><polygon fill="#555555" points="109,321.3128,113,312.3128,109,316.3128,105,312.3128,109,321.3128" style="stroke: #555555; stroke-width: 2.0;"/><!--MD5=[f719c65e3cd5877eb9f397b030baf6d1]
+link chunk to embed--><path d="M109,356.7028 C109,356.7028 109,440.7428 109,440.7428 " fill="none" id="chunk-&gt;embed" style="stroke: #555555; stroke-width: 2.0;"/><polygon fill="#555555" points="109,445.7428,113,436.7428,109,440.7428,105,436.7428,109,445.7428" style="stroke: #555555; stroke-width: 2.0;"/><!--MD5=[14e589a052329e665bcf72ada14e2408]
+link embed to openai--><path d="M164.5,445.9328 C164.5,444.8228 164.5,444.1328 164.5,444.1328 C164.5,444.1328 649.7,444.1328 649.7,444.1328 " fill="none" id="embed-&gt;openai" style="stroke: #555555; stroke-width: 2.0;"/><polygon fill="#555555" points="654.7,444.1328,645.7,440.1328,649.7,444.1328,645.7,448.1328,654.7,444.1328" style="stroke: #555555; stroke-width: 2.0;"/><text fill="#000000" font-family="Arial" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="45" x="574.5" y="399.6997">API call</text><!--MD5=[fad15655625d41508c0bd675faf1956d]
+link openai to embed--><path d="M654.93,441.1328 C492.03,441.1328 170,441.1328 170,441.1328 C170,441.1328 170,441.6128 170,441.6128 " fill="none" id="openai-&gt;embed" style="stroke: #555555; stroke-width: 2.0;"/><polygon fill="#555555" points="170,445.9028,174,436.9028,170,440.9028,166,436.9028,170,445.9028" style="stroke: #555555; stroke-width: 2.0;"/><text fill="#000000" font-family="Arial" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="112" x="455" y="399.6997">1536-dim vectors</text><!--MD5=[b1ec60cbada152cf55f28d4273f8e0c5]
+link embed to chroma--><path d="M139.25,481.3128 C139.25,481.3128 139.25,580.6228 139.25,580.6228 " fill="none" id="embed-&gt;chroma" style="stroke: #555555; stroke-width: 2.0;"/><polygon fill="#555555" points="139.25,585.6228,143.25,576.6228,139.25,580.6228,135.25,576.6228,139.25,585.6228" style="stroke: #555555; stroke-width: 2.0;"/><text fill="#000000" font-family="Arial" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="70" x="47" y="536.6997">upsert with</text><text fill="#000000" font-family="Arial" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="100" x="32" y="551.8325">ids + metadata</text><!--MD5=[8efdc581dcc4934b230519e9a1c62620]
+link query to embedq--><path d="M363,260.7428 C363,260.7428 363,316.3128 363,316.3128 " fill="none" id="query-&gt;embedq" style="stroke: #555555; stroke-width: 2.0;"/><polygon fill="#555555" points="363,321.3128,367,312.3128,363,316.3128,359,312.3128,363,321.3128" style="stroke: #555555; stroke-width: 2.0;"/><!--MD5=[07d15e8df06b7fbd510547f2864e4d80]
+link embedq to openai--><path d="M400.67,357.0128 C400.67,385.7728 400.67,439.1328 400.67,439.1328 C400.67,439.1328 649.64,439.1328 649.64,439.1328 " fill="none" id="embedq-&gt;openai" style="stroke: #555555; stroke-width: 2.0;"/><polygon fill="#555555" points="654.64,439.1328,645.64,435.1328,649.64,439.1328,645.64,443.1328,654.64,439.1328" style="stroke: #555555; stroke-width: 2.0;"/><text fill="#000000" font-family="Arial" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="45" x="784" y="399.6997">API call</text><!--MD5=[3a9578d9bd486bb01d5041cfdd4d7983]
+link openai to embedq--><path d="M654.83,436.1328 C555.46,436.1328 411.33,436.1328 411.33,436.1328 C411.33,436.1328 411.33,361.9228 411.33,361.9228 " fill="none" id="openai-&gt;embedq" style="stroke: #555555; stroke-width: 2.0;"/><polygon fill="#555555" points="411.33,356.9228,407.33,365.9228,411.33,361.9228,415.33,365.9228,411.33,356.9228" style="stroke: #555555; stroke-width: 2.0;"/><text fill="#000000" font-family="Arial" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="80" x="662" y="399.6997">query vector</text><!--MD5=[5c13e55db4cb974e2ddc415d002712d7]
+link embedq to cquery--><path d="M347,356.7028 C347,356.7028 347,440.7428 347,440.7428 " fill="none" id="embedq-&gt;cquery" style="stroke: #555555; stroke-width: 2.0;"/><polygon fill="#555555" points="347,445.7428,351,436.7428,347,440.7428,343,436.7428,347,445.7428" style="stroke: #555555; stroke-width: 2.0;"/><!--MD5=[f67d8fe0aaaf6a85deca3a91259f7f85]
+link cquery to chroma--><path d="M259.87,470.1328 C225.35,470.1328 190,470.1328 190,470.1328 C190,470.1328 190,580.4428 190,580.4428 " fill="none" id="cquery-&gt;chroma" style="stroke: #555555; stroke-width: 2.0;"/><polygon fill="#555555" points="190,585.4428,194,576.4428,190,580.4428,186,576.4428,190,585.4428" style="stroke: #555555; stroke-width: 2.0;"/><text fill="#000000" font-family="Arial" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="76" x="316" y="544.1997">ANN search</text><!--MD5=[f593972c37969fbb6ae91af54d31458c]
+link chroma to cquery--><path d="M183,585.6028 C183,540.1228 183,458.1328 183,458.1328 C183,458.1328 254.82,458.1328 254.82,458.1328 " fill="none" id="chroma-&gt;cquery" style="stroke: #555555; stroke-width: 2.0;"/><polygon fill="#555555" points="259.82,458.1328,250.82,454.1328,254.82,458.1328,250.82,462.1328,259.82,458.1328" style="stroke: #555555; stroke-width: 2.0;"/><text fill="#000000" font-family="Arial" font-size="13" lengthAdjust="spacingAndGlyphs" textLength="100" x="174" y="544.1997">nearest vectors</text><!--MD5=[a38503b39590097c9f1ad789f279155b]
+link cquery to results--><path d="M325,481.3128 C325,481.3128 325,585.0328 325,585.0328 " fill="none" id="cquery-&gt;results" style="stroke: #555555; stroke-width: 2.0;"/><polygon fill="#555555" points="325,590.0328,329,581.0328,325,585.0328,321,581.0328,325,590.0328" style="stroke: #555555; stroke-width: 2.0;"/><!--MD5=[308ceff5917ee9d8aca216a7e4a31942]
+@startuml pipeline-vector-store
+
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Arial
+skinparam defaultFontSize 13
+skinparam ArrowColor #555555
+skinparam ArrowThickness 2
+skinparam componentStyle rectangle
+skinparam linetype ortho
+
+skinparam component {
+  BackgroundColor #EEF3FB
+  BorderColor #5577AA
+  FontColor #222222
+}
+
+skinparam database {
+  BackgroundColor #FFF8E7
+  BorderColor #CC9900
+}
+
+skinparam cloud {
+  BackgroundColor #F0FFF0
+  BorderColor #448844
+}
+
+title Phase 2 - - Chroma Vector Store Pipeline
+
+package "Ingestion (ingest.py)" {
+  [.txt files] as docs
+  [load_documents()] as load
+  [chunk_text()] as chunk
+  [embed_chunks()] as embed
+}
+
+cloud "OpenAI API\ntext-embedding-3-small" as openai
+
+database "Chroma DB\n(persistent)" as chroma
+
+package "Search (search.py)" {
+  [Query] as query
+  [embed_query()] as embedq
+  [collection.query()] as cquery
+  [Top-K Results\n(text + source + distance)] as results
+}
+
+docs - -> load
+load - -> chunk
+chunk - -> embed
+embed - -> openai : API call
+openai - -> embed : 1536-dim vectors
+embed - -> chroma : upsert with\nids + metadata
+
+query - -> embedq
+embedq - -> openai : API call
+openai - -> embedq : query vector
+embedq - -> cquery
+cquery - -> chroma : ANN search
+chroma - -> cquery : nearest vectors
+cquery - -> results
+
+@enduml
+
+PlantUML version 1.2020.02(Sun Mar 01 10:22:07 UTC 2020)
+(GPL source distribution)
+Java Runtime: OpenJDK Runtime Environment
+JVM: OpenJDK 64-Bit Server VM
+Java Version: 17.0.19+10
+Operating System: Linux
+Default Encoding: UTF-8
+Language: en
+Country: null
+--></g></svg>
