@@ -1,10 +1,12 @@
-@startuml pipeline-phase2
+@startuml pipeline-vector-store
 
 skinparam backgroundColor #FFFFFF
 skinparam defaultFontName Arial
 skinparam defaultFontSize 13
 skinparam ArrowColor #555555
+skinparam ArrowThickness 2
 skinparam componentStyle rectangle
+skinparam linetype ortho
 
 skinparam component {
   BackgroundColor #EEF3FB

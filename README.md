@@ -26,7 +26,7 @@ Search
 </td>
 <td valign="top" width="45%">
 
-![Pipeline](./docs/pipeline-phase2-vector-store.svg)
+![Pipeline](./docs/pipeline-vector-store.svg)
 
 </td>
 </tr>

@@ -1,4 +1,4 @@
-@startuml pipeline
+@startuml pipeline-semantic-search
 skinparam direction left to right
 skinparam backgroundColor #FAFAFA
 skinparam defaultFontName Arial
