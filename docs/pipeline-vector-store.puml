@@ -1,4 +1,4 @@
-@startuml pipeline-phase2
+@startuml pipeline-vector-store
 
 skinparam backgroundColor #FFFFFF
 skinparam defaultFontName Arial
