@@ -14,11 +14,11 @@ def main():
     )
 
     print("Sample entry:")
-    print(f"  id:          {sample['ids'][0]}")
-    print(f"  source:      {sample['metadatas'][0]['source']}")
-    print(f"  chunk_index: {sample['metadatas'][0]['chunk_index']}")
-    print(f"  text:        {sample['documents'][0][:120]}...")
-    print(f"  embedding:   [{sample['embeddings'][0][0]:.6f}, {sample['embeddings'][0][1]:.6f}, ...] ({len(sample['embeddings'][0])} dims)")
+    print(f"id: {sample['ids'][0]}")
+    print(f"source: {sample['metadatas'][0]['source']}")
+    print(f"chunk_index: {sample['metadatas'][0]['chunk_index']}")
+    print(f"text: {sample['documents'][0][:120]}...")
+    print(f"embedding: [{sample['embeddings'][0][0]:.6f}, {sample['embeddings'][0][1]:.6f}, ...] ({len(sample['embeddings'][0])} dims)")
 
 
 if __name__ == '__main__':
