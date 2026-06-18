@@ -17,9 +17,10 @@ skinparam ActorBorderColor #448844
 title Chroma Vector Store Pipeline
 
 box "Ingestion" #EEF6FF
-  participant "load_documents()" as load
-  participant "chunk_text()" as chunk
-  participant "embed_chunks()" as embed
+  collections "documents/" as docs
+  participant "ingest.py" as ingest
+  participant "utils.py" as utils
+  participant "embed.py" as embed
 end box
 
 participant "OpenAI API" as openai
@@ -27,28 +28,32 @@ database "Chroma DB" as chroma
 
 box "Search" #FFF0F8
   actor "Query" as query
-  participant "embed_query()" as embedq
-  participant "collection.query()" as cquery
+  participant "search.py" as search
 end box
 
 == Ingestion ==
 
-[-> load : .txt files
-load -> chunk : text
-chunk -> embed : chunks
-embed -> openai : embed request
+docs -> ingest : .txt files
+ingest -> utils : load_documents()
+utils --> ingest : text
+ingest -> utils : chunk_text()
+utils --> ingest : chunks
+ingest -> embed : embed_chunks()
+embed -> openai : embeddings.create()
 openai --> embed : 1536-dim vectors
-embed -> chroma : upsert(ids, embeddings, metadata)
+embed --> ingest : embedded chunks
+ingest -> chroma : upsert(ids, embeddings, documents, metadatas)
 
 == Search ==
 
-query -> embedq : query string
-embedq -> openai : embed request
-openai --> embedq : query vector
-embedq -> cquery : query vector
-cquery -> chroma : ANN search
-chroma --> cquery : nearest vectors
-cquery --> query : Top-K results\n(text + source + distance)
+query -> search : query string
+search -> embed : embed_query()
+embed -> openai : embeddings.create()
+openai --> embed : query vector
+embed --> search : query vector
+search -> chroma : query(query_embeddings, n_results, include)
+chroma --> search : nearest vectors
+search --> query : Top-K results\n(text + source + distance)
 
 ' end
 @enduml
