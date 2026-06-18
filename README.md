@@ -6,31 +6,20 @@ A progressive RAG system built from first principles -- from raw embeddings and 
 
 ## What It Does (Current State)
 
-<table>
-<tr>
-<td valign="top" width="55%">
-
-Ingestion
+**Ingestion**
 
 1. **Loads** `.txt` files (PDF, DOCX, Markdown from Phase 4)
 2. **Chunks** each document into overlapping word windows
 3. **Embeds** each chunk using OpenAI `text-embedding-3-small`, producing a 1536-dimensional vector
 4. **Stores** vectors with metadata (`source`, `chunk_index`) in a persistent Chroma collection
 
-Search
+**Search**
 
 1. **Embeds** the query using the same model
 2. **Queries** Chroma for the top-K nearest vectors using built-in ANN (Approximate Nearest Neighbor) search
 3. **Returns** results with chunk text, source filename, and distance score
 
-</td>
-<td valign="top" width="45%">
-
 ![Pipeline](./diagrams/docs/pipeline-vector-store.svg)
-
-</td>
-</tr>
-</table>
 
 ---
 
