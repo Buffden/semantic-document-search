@@ -41,7 +41,7 @@ jobs:
 
       - name: Generate changed diagrams
         run: |
-          CHANGED=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | grep -E '\.(puml|plantuml)$')
+          CHANGED=$(git diff --name-only ${{ github.event.pull_request.base.sha }} HEAD | grep -E '\.(puml|plantuml)$' || true)
           if [ -n "$CHANGED" ]; then
             diagram-sync --files $CHANGED
           else
