@@ -2,7 +2,7 @@
 
 skinparam backgroundColor #FFFFFF
 skinparam defaultFontName Arial
-skinparam defaultFontSize 16
+skinparam defaultFontSize 15
 skinparam sequenceArrowThickness 2
 skinparam SequenceBoxBackgroundColor #F8F9FF
 skinparam SequenceBoxBorderColor #AABBDD
