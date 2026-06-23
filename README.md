@@ -1,25 +1,26 @@
 # RAG Document Engine
 
-A progressive RAG system built from first principles -- from raw embeddings and cosine similarity all the way to a full retrieval-augmented generation pipeline with document ingestion, reranking, and cited answers.
+A progressive RAG system built from first principles -- from raw embeddings and cosine similarity all the way to a full retrieval-augmented generation pipeline with multi-format document ingestion and cited answers.
 
 ---
 
 ## What It Does (Current State)
 
-**Ingestion**
+### Ingestion
 
-1. **Loads** `.txt` files (PDF, DOCX, Markdown from Phase 4)
+1. **Parses** `.txt`, `.pdf`, `.docx`, and `.md` files into plain text via format-specific parsers
 2. **Chunks** each document into overlapping word windows
 3. **Embeds** each chunk using OpenAI `text-embedding-3-small`, producing a 1536-dimensional vector
-4. **Stores** vectors with metadata (`source`, `chunk_index`) in a persistent Chroma collection
+4. **Deduplicates** - deletes any existing chunks for the file before storing, so re-ingestion replaces rather than duplicates
+5. **Stores** vectors with metadata (`source`, `chunk_index`) in a persistent Chroma collection
 
-**Search**
+### Search
 
 1. **Embeds** the query using the same model
 2. **Queries** Chroma for the top-K nearest vectors using built-in ANN (Approximate Nearest Neighbor) search
 3. **Returns** results with chunk text, source filename, and distance score
 
-**Generation**
+### Generation
 
 1. **Selects** retrieved chunks within a 2000-token budget using `tiktoken`
 2. **Builds** a numbered context block from the selected chunks
@@ -34,6 +35,9 @@ A progressive RAG system built from first principles -- from raw embeddings and 
 - OpenAI SDK (`text-embedding-3-small` for embeddings, `gpt-4o-mini` for generation)
 - Chroma (persistent vector database)
 - tiktoken (token counting for context budget management)
+- pymupdf (PDF parsing)
+- python-docx (DOCX parsing)
+- numpy (cosine similarity computation)
 - python-dotenv
 
 ---
@@ -42,24 +46,25 @@ A progressive RAG system built from first principles -- from raw embeddings and 
 
 ```text
 rag-document-engine/
-├── documents/                  # Sample .txt files
-│   ├── ancient-rome.txt
-│   ├── climate-change.txt
-│   ├── music-and-the-brain.txt
-│   ├── nutrition-and-health.txt
-│   └── space-exploration.txt
+├── documents/                  # Sample documents (.txt, .pdf, .docx, .md)
+├── ingest/                     # Format-specific parsers (Phase 4)
+│   ├── __init__.py
+│   ├── router.py               # Resolves parser by file extension
+│   ├── pdf_parser.py           # PDF extraction via pymupdf
+│   ├── docx_parser.py          # DOCX extraction via python-docx
+│   └── markdown_parser.py      # Markdown stripping to plain text
 ├── prompts/
 │   └── system_prompt.txt       # LLM system prompt (loaded at runtime)
 ├── embed.py                    # embed_chunks and embed_query utilities
-├── ingest.py                   # Load, chunk, embed, store in Chroma
+├── ingest.py                   # CLI entry point - parse, chunk, embed, store
 ├── search.py                   # Embed query + retrieve top-K from Chroma
 ├── generate.py                 # Token-budgeted answer generation via gpt-4o-mini
 ├── rag.py                      # End-to-end pipeline entry point
 ├── inspect_collection.py       # Print collection stats and a sample entry
 ├── utils.py                    # chunk_text, load_document, load_documents
 ├── chroma_db/                  # Chroma persistent storage (not committed)
-├── diagrams/                   # Pipeline diagrams (SVG, auto-exported from PlantUML)
-├── docs/                       # PlantUML source files and implementation plan
+├── diagrams/                   # Pipeline diagrams (SVG, generated via npx diagram-sync)
+├── docs/                       # Phase notes, PlantUML source files, and docs index
 ├── pyproject.toml
 └── .env                        # API keys (not committed)
 ```
@@ -88,8 +93,9 @@ TOKEN_BUDGET=2000
 ## Usage
 
 ```bash
-# Step 1 -- Ingest documents into Chroma
-python3 ingest.py
+# Step 1 -- Ingest a single file or an entire directory
+python3 ingest.py documents/ancient-rome.pdf
+python3 ingest.py documents/
 
 # Step 2 -- Ask a question (full RAG pipeline)
 python3 rag.py "what foods are good for the heart"
@@ -130,15 +136,15 @@ No answer found in the documents.
 **Search only** -- `python3 search.py`
 
 ```text
-Result 1 (distance: 1.2862) -- nutrition-and-health.txt [chunk 0]
+Result 1 (distance: 1.2862) - nutrition-and-health.txt [chunk 0]
 Nutrition is the science of how food affects the body... Unsaturated fats found in olive oil,
 nuts, avocados, and fatty fish are associated with reduced risk of heart disease...
 
-Result 2 (distance: 1.3720) -- nutrition-and-health.txt [chunk 1]
+Result 2 (distance: 1.3720) - nutrition-and-health.txt [chunk 1]
 The Mediterranean diet -- rich in vegetables, fruit, whole grains, fish, and olive oil -- is
 consistently associated with lower rates of heart disease, diabetes, and cognitive decline...
 
-Result 3 (distance: 1.6426) -- music-and-the-brain.txt [chunk 1]
+Result 3 (distance: 1.6426) - music-and-the-brain.txt [chunk 1]
 Music also affects mood and stress. Slow, quiet music activates the parasympathetic nervous
 system, lowering heart rate and cortisol levels...
 ```
@@ -156,7 +162,7 @@ Note: distance is an inverse similarity score -- lower means more relevant.
 | 1 | Semantic Foundation | Complete |
 | 2 | Vector Store | Complete |
 | 3 | RAG Pipeline | Complete |
-| 4 | Document Ingestion | Planned |
+| 4 | Document Ingestion | Complete |
 | 5 | Retrieval Quality | Planned |
 | 6 | Search and Chat Mode | Planned |
 | 7 | Role-Based Document Access | Planned |
@@ -173,14 +179,15 @@ See [docs/implementation-plan.md](./docs/implementation-plan.md) for full phase 
 - **Model consistency** -- the same embedding model must be used for both documents and queries
 - **Vector database** -- stores embeddings with metadata and retrieves them by similarity using ANN search
 - **RAG** -- Retrieval-Augmented Generation: retrieve relevant context, then generate a grounded answer
+- **Document parsing** -- format-specific extraction that converts PDF, DOCX, and Markdown into plain text before chunking; all formats share the same embedding and storage flow after parsing
 
 ---
 
 ## Diagrams
 
-Pipeline diagrams are maintained as PlantUML source files in `docs/` and auto-exported to SVG on every push to main using [diagram-sync](https://www.npmjs.com/package/diagram-sync).
+Pipeline diagrams are maintained as PlantUML source files in `docs/` and exported to SVG via `npx diagram-sync` using [diagram-sync](https://www.npmjs.com/package/diagram-sync).
 
-The three diagrams below show the system growing phase by phase -- each one builds on the previous.
+The diagrams below show the system growing phase by phase -- each one builds on the previous.
 
 ### Phase 1 -- Semantic Search (cosine similarity over JSON embeddings)
 
@@ -193,3 +200,23 @@ The three diagrams below show the system growing phase by phase -- each one buil
 ### Phase 3 -- RAG Pipeline (generation on top of retrieval)
 
 ![RAG Pipeline](./diagrams/docs/pipeline-rag.svg)
+
+### Phase 4 -- Document Ingestion (multi-format parsing, deduplication)
+
+The ingestion flow is split into 4 focused diagrams - read in this order:
+
+**1. Entry and Routing** - CLI validation, collection setup, file vs directory routing
+
+![Entry and Routing](./diagrams/docs/pipeline-document-ingestion-entry-routing.svg)
+
+**2. Parsing** - router extension resolution, all 4 parsers (PDF / DOCX / MD / TXT), flatten to plain text
+
+![Parsing](./diagrams/docs/pipeline-document-ingestion-parsing.svg)
+
+**3. Chunking and Embedding** - sliding window chunking, OpenAI embeddings API call
+
+![Chunking and Embedding](./diagrams/docs/pipeline-document-ingestion-chunk-embed.svg)
+
+**4. Upsert** - deduplication check, ChromaDB upsert with full payload
+
+![Upsert](./diagrams/docs/pipeline-document-ingestion-upsert.svg)
