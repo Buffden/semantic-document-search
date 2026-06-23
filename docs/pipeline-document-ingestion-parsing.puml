@@ -1,0 +1,108 @@
+@startuml pipeline-document-ingestion-parsing
+skinparam sequenceMessageAlign center
+skinparam ParticipantPadding 10
+
+participant "ingest_file()" as ingest
+participant "router" as router
+participant "pdf_parser" as pdfParser
+participant "docx_parser" as docxParser
+participant "markdown_parser" as mdParser
+participant "_parse_txt" as txtParser
+
+ingest -> router : parse(filepath)
+activate router
+
+router -> router : _resolve_parser(filepath)
+router -> router : ext = Path(filepath).suffix.lower()
+
+opt ext not in _PARSERS (.txt / .pdf / .docx / .md)
+router --> ingest : raise ValueError("Unsupported file type: {ext}")
+end
+
+== PDF Parser ==
+
+alt ext == ".pdf"
+router -> pdfParser : parse_pdf(filepath)
+activate pdfParser
+pdfParser -> pdfParser : doc = fitz.open(filepath)
+loop for page_num, page in enumerate(doc, start = 1)
+pdfParser -> pdfParser : text = page.get_text()
+opt text.strip() is non-empty
+pdfParser -> pdfParser : append {"text": text, "page": page_num}
+end
+end
+pdfParser -> pdfParser : doc.close()
+pdfParser --> router : pages: list[dict]
+deactivate pdfParser
+
+== DOCX Parser ==
+
+else ext == ".docx"
+router -> docxParser : parse_docx(filepath)
+activate docxParser
+docxParser -> docxParser : doc = docx.Document(filepath)\ncurrent_heading = None, buffer = []
+loop for each para in doc.paragraphs
+alt para.style.name starts with "Heading"
+opt buffer is non-empty
+docxParser -> docxParser : flush buffer to sections with current_heading
+docxParser -> docxParser : buffer = []
+end
+docxParser -> docxParser : current_heading = para.text.strip() or None
+else regular paragraph
+opt para.text.strip() is non-empty
+docxParser -> docxParser : buffer.append(para.text.strip())
+end
+end
+end
+opt remaining buffer is non-empty
+docxParser -> docxParser : flush buffer to sections with current_heading
+end
+docxParser --> router : sections: list[dict]
+deactivate docxParser
+
+== Markdown Parser ==
+
+else ext == ".md"
+router -> mdParser : parse_markdown(filepath)
+activate mdParser
+mdParser -> mdParser : open(filepath, "r", encoding = "utf-8"), raw = f.read()
+mdParser -> mdParser : sections = [], current_heading = None, buffer = []
+loop for each line in raw.splitlines()
+alt line matches r"^#{1,6}\s+(.*)"
+opt buffer is non-empty
+mdParser -> mdParser : flush buffer to sections with current_heading
+mdParser -> mdParser : buffer = []
+end
+mdParser -> mdParser : current_heading = match.group(1).strip() or None
+else regular line
+mdParser -> mdParser : cleaned = _strip_markdown(line)
+note right : strips: code fences, HR lines,\nblockquotes, list markers,\nimages, links, bold/italic,\ninline code, HTML tags
+opt cleaned is non-empty
+mdParser -> mdParser : buffer.append(cleaned)
+end
+end
+end
+opt remaining buffer is non-empty
+mdParser -> mdParser : flush buffer to sections with current_heading
+end
+mdParser --> router : sections: list[dict]
+deactivate mdParser
+
+== TXT Parser ==
+
+else ext == ".txt"
+router -> txtParser : _parse_txt(filepath)
+activate txtParser
+txtParser -> txtParser : open(filepath, "r", encoding = "utf-8")
+txtParser -> txtParser : text = f.read()
+txtParser --> router : [{"text": full_text}]
+deactivate txtParser
+end
+
+== Flatten ==
+
+router -> router : _flatten(sections)\n"\n\n".join(s["text"] for s in sections)
+router --> ingest : plain text: str
+deactivate router
+
+@enduml

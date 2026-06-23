@@ -1,0 +1,26 @@
+@startuml pipeline-document-ingestion-upsert
+skinparam sequenceMessageAlign center
+skinparam ParticipantPadding 10
+
+participant "ingest_file()" as ingest
+participant "ChromaDB\nCollection" as collection
+
+== Deduplication ==
+
+ingest -> collection : count()
+collection --> ingest : current_count
+
+opt current_count > 0 — collection already has data
+ingest -> collection : delete(where = {"source": filename})
+note right : Removes all existing chunks\nfor this file before re-ingesting\n(handles re-ingest / refresh)
+end
+
+== Upsert ==
+
+ingest -> collection : upsert(ids, embeddings, documents, metadatas)
+note right : ids        = ["{filename}_{i}" per chunk]\nembeddings = [float vectors from OpenAI]\ndocuments  = raw chunk strings\nmetadatas  = [{"source": filename, "chunk_index": i}]
+collection --> ingest : OK
+
+ingest -> ingest : print "Ingested {len(chunks)} chunks from {filename}"
+
+@enduml

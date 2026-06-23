@@ -1,0 +1,35 @@
+@startuml pipeline-document-ingestion-chunk-embed
+skinparam sequenceMessageAlign center
+skinparam ParticipantPadding 10
+
+participant "ingest_file()" as ingest
+participant "utils\nchunk_text()" as chunker
+participant "embed\nembed_chunks()" as embedder
+participant "OpenAI\nEmbeddings API" as openai
+
+== Chunking ==
+
+ingest -> chunker : chunk_text(text, chunk_size = 300, overlap = 50)
+activate chunker
+chunker -> chunker : words = text.split()
+chunker -> chunker : step = chunk_size - overlap = 250
+loop for i in range(0, len(words), step = 250)
+chunker -> chunker : chunk_words = words[i : i + 300]
+chunker -> chunker : chunks.append(" ".join(chunk_words))
+end
+chunker --> ingest : chunks: list[str]
+deactivate chunker
+
+== Embedding ==
+
+ingest -> embedder : embed_chunks(chunks)
+activate embedder
+embedder -> openai : embeddings.create(model = EMBEDDING_MODEL, input = chunks)
+activate openai
+openai --> embedder : EmbeddingResponse — response.data[i].embedding
+deactivate openai
+embedder -> embedder : build [{"text": chunk, "embedding": [...float]}]
+embedder --> ingest : embedded: list[dict]
+deactivate embedder
+
+@enduml
