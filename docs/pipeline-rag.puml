@@ -1,0 +1,70 @@
+@startuml pipeline-rag
+
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Arial
+skinparam defaultFontSize 16
+skinparam sequenceArrowThickness 2
+skinparam SequenceBoxBackgroundColor #F8F9FF
+skinparam SequenceBoxBorderColor #AABBDD
+skinparam ParticipantBackgroundColor #EEF3FB
+skinparam ParticipantBorderColor #5577AA
+skinparam ParticipantFontColor #222222
+skinparam DatabaseBackgroundColor #FFF8E7
+skinparam DatabaseBorderColor #CC9900
+skinparam ActorBackgroundColor #F0FFF0
+skinparam ActorBorderColor #448844
+
+title RAG Pipeline
+
+box "Retrieval" #EEF6FF
+  actor "User" as user
+  participant "rag.py" as rag
+  participant "search.py" as search
+  participant "embed.py" as embed
+end box
+
+database "Chroma DB" as chroma
+participant "OpenAI API" as openai
+
+box "Generation" #FFF0F8
+  participant "generate.py" as generate
+end box
+
+== Retrieval ==
+
+user -> rag : question\n(CLI arg or input())
+rag -> search : search(question, top_k=5)
+search -> embed : embed_query()
+embed -> openai : embeddings.create()\ntext-embedding-3-small
+openai --> embed : query vector (1536-dim)
+embed --> search : query vector
+search -> chroma : query(query_embeddings, n_results=5)
+chroma --> search : top-5 nearest chunks\n(text + source + chunk_index + distance)
+search --> rag : chunks list
+
+== Generation ==
+
+rag -> generate : generate_answer(question, chunks)
+generate -> generate : _select_chunks_within_budget()\ntiktoken counts tokens per chunk\nskips any chunk exceeding 2000-token budget
+generate -> generate : _build_context_block()\nnumbered + labelled context entries
+generate -> openai : chat.completions.create()\ngpt-4o-mini · temperature=0
+note right of openai
+  System prompt:
+  Answer ONLY from the provided context.
+  If context is insufficient, respond with:
+  "I don't know based on the provided documents."
+end note
+openai --> generate : answer text
+generate --> rag : { answer, sources }
+
+== Output ==
+
+rag -> rag : answer == NO_ANSWER_PHRASE?
+alt answer not in documents
+  rag -> user : "No answer found in the documents."
+else answer found
+  rag -> user : Answer text\n+ source citations\n(source filename · chunk index · text preview)
+end
+
+' end
+@enduml
