@@ -19,15 +19,21 @@ A progressive RAG system built from first principles -- from raw embeddings and 
 2. **Queries** Chroma for the top-K nearest vectors using built-in ANN (Approximate Nearest Neighbor) search
 3. **Returns** results with chunk text, source filename, and distance score
 
-![Pipeline](./diagrams/docs/pipeline-vector-store.svg)
+**Generation**
+
+1. **Selects** retrieved chunks within a 2000-token budget using `tiktoken`
+2. **Builds** a numbered context block from the selected chunks
+3. **Calls** `gpt-4o-mini` with a grounding system prompt that enforces context-only answers
+4. **Returns** a grounded answer with source citations, or a clean no-answer message when context is insufficient
 
 ---
 
 ## Stack
 
 - Python 3.12
-- OpenAI SDK (`text-embedding-3-small`)
+- OpenAI SDK (`text-embedding-3-small` for embeddings, `gpt-4o-mini` for generation)
 - Chroma (persistent vector database)
+- tiktoken (token counting for context budget management)
 - python-dotenv
 
 ---
@@ -42,15 +48,18 @@ rag-document-engine/
 │   ├── music-and-the-brain.txt
 │   ├── nutrition-and-health.txt
 │   └── space-exploration.txt
+├── prompts/
+│   └── system_prompt.txt       # LLM system prompt (loaded at runtime)
 ├── embed.py                    # embed_chunks and embed_query utilities
 ├── ingest.py                   # Load, chunk, embed, store in Chroma
 ├── search.py                   # Embed query + retrieve top-K from Chroma
+├── generate.py                 # Token-budgeted answer generation via gpt-4o-mini
+├── rag.py                      # End-to-end pipeline entry point
 ├── inspect_collection.py       # Print collection stats and a sample entry
 ├── utils.py                    # chunk_text, load_document, load_documents
 ├── chroma_db/                  # Chroma persistent storage (not committed)
-├── diagrams/                   # Pipeline diagrams
-├── docs/
-│   └── implementation-plan.md  # Phase-by-phase build plan
+├── diagrams/                   # Pipeline diagrams (SVG, auto-exported from PlantUML)
+├── docs/                       # PlantUML source files and implementation plan
 ├── pyproject.toml
 └── .env                        # API keys (not committed)
 ```
@@ -70,6 +79,8 @@ Create a `.env` file:
 ```env
 OPENAI_API_KEY=sk-...
 EMBEDDING_MODEL=text-embedding-3-small
+GENERATION_MODEL=gpt-4o-mini
+TOKEN_BUDGET=2000
 ```
 
 ---
@@ -80,20 +91,43 @@ EMBEDDING_MODEL=text-embedding-3-small
 # Step 1 -- Ingest documents into Chroma
 python3 ingest.py
 
-# Step 2 -- Search
+# Step 2 -- Ask a question (full RAG pipeline)
+python3 rag.py "what foods are good for the heart"
+
+# Or run interactively
+python3 rag.py
+
+# Search only (returns raw chunks, no generation)
 python3 search.py
 
 # Inspect the collection
 python3 inspect_collection.py
 ```
 
-The query is set in `search.py` main. Change it to anything you want to search for.
-
 ---
 
 ## Sample Output
 
-Query: `"what foods are good for the heart"`
+**RAG pipeline** -- `python3 rag.py "what foods are good for the heart"`
+
+```text
+Answer:
+Foods that are good for the heart include those rich in unsaturated fats, such as olive oil,
+nuts, avocados, and fatty fish. The Mediterranean diet -- rich in vegetables, fruit, whole
+grains, fish, and olive oil -- is consistently associated with lower rates of heart disease.
+
+Sources:
+  [1] nutrition-and-health.txt (chunk 0): "Nutrition is the science of how food affects the body..."
+  [2] nutrition-and-health.txt (chunk 1): "The Mediterranean diet -- rich in vegetables, fruit, whole grains..."
+```
+
+**No-answer path** -- `python3 rag.py "what is the capital of France"`
+
+```text
+No answer found in the documents.
+```
+
+**Search only** -- `python3 search.py`
 
 ```text
 Result 1 (distance: 1.2862) -- nutrition-and-health.txt [chunk 0]
@@ -121,7 +155,7 @@ Note: distance is an inverse similarity score -- lower means more relevant.
 | ----: | ----- | ------ |
 | 1 | Semantic Foundation | Complete |
 | 2 | Vector Store | Complete |
-| 3 | RAG Pipeline | Planned |
+| 3 | RAG Pipeline | Complete |
 | 4 | Document Ingestion | Planned |
 | 5 | Retrieval Quality | Planned |
 | 6 | Search and Chat Mode | Planned |
@@ -144,4 +178,18 @@ See [docs/implementation-plan.md](./docs/implementation-plan.md) for full phase 
 
 ## Diagrams
 
-Pipeline diagrams are maintained as PlantUML source files in `diagrams/` and auto-exported to SVG on every push to main using [diagram-sync](https://www.npmjs.com/package/diagram-sync).
+Pipeline diagrams are maintained as PlantUML source files in `docs/` and auto-exported to SVG on every push to main using [diagram-sync](https://www.npmjs.com/package/diagram-sync).
+
+The three diagrams below show the system growing phase by phase -- each one builds on the previous.
+
+### Phase 1 -- Semantic Search (cosine similarity over JSON embeddings)
+
+![Semantic Search Pipeline](./diagrams/docs/pipeline-semantic-search.svg)
+
+### Phase 2 -- Vector Store (Chroma replaces the JSON store)
+
+![Vector Store Pipeline](./diagrams/docs/pipeline-vector-store.svg)
+
+### Phase 3 -- RAG Pipeline (generation on top of retrieval)
+
+![RAG Pipeline](./diagrams/docs/pipeline-rag.svg)

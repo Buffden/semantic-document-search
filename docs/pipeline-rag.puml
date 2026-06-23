@@ -2,7 +2,7 @@
 
 skinparam backgroundColor #FFFFFF
 skinparam defaultFontName Arial
-skinparam defaultFontSize 16
+skinparam defaultFontSize 15
 skinparam sequenceArrowThickness 2
 skinparam SequenceBoxBackgroundColor #F8F9FF
 skinparam SequenceBoxBorderColor #AABBDD
@@ -14,7 +14,7 @@ skinparam DatabaseBorderColor #CC9900
 skinparam ActorBackgroundColor #F0FFF0
 skinparam ActorBorderColor #448844
 
-title RAG Pipeline
+title Phase 3 — RAG Pipeline
 
 box "Retrieval" #EEF6FF
   actor "User" as user
