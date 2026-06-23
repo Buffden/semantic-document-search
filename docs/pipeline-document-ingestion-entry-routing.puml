@@ -1,0 +1,62 @@
+@startuml pipeline-document-ingestion-entry-routing
+skinparam sequenceMessageAlign center
+skinparam ParticipantPadding 10
+
+actor User as user
+participant "ingest.py" as main
+participant "ChromaDB\nPersistentClient" as chromaClient
+participant "ChromaDB\nCollection" as collection
+
+== Module Init (at import time) ==
+
+main -> chromaClient : PersistentClient(path = "./chroma_db")
+activate chromaClient
+chromaClient --> main : client (persistent, on-disk)
+deactivate chromaClient
+
+== main() Entry ==
+
+user -> main : python ingest.py <path>
+activate main
+
+opt sys.argv < 2 — no argument provided
+main --> user : print "Usage: python ingest.py <file_or_directory>"
+main --> user : sys.exit(1)
+end
+
+main -> chromaClient : get_or_create_collection(name = "documents")
+activate chromaClient
+chromaClient --> main : collection
+deactivate chromaClient
+activate collection
+
+== Path Routing ==
+
+alt target.is_file()
+main -> main : ingest_file(collection, filepath)
+
+else target.is_dir()
+main -> main : filter files by suffix (.txt | .pdf | .docx | .md)
+alt no supported files found in directory
+main --> user : print "No supported files found in {target}"
+main --> user : sys.exit(0)
+else supported files exist
+loop for each file in directory
+main -> main : ingest_file(collection, filepath)
+end
+end
+
+else path does not exist
+main --> user : print "Path not found: {target}"
+main --> user : sys.exit(1)
+end
+
+== Summary ==
+
+main -> collection : count()
+collection --> main : total_count
+main --> user : print "Total vectors in collection: {total_count}"
+deactivate collection
+deactivate main
+
+@enduml
