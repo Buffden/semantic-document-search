@@ -238,3 +238,64 @@ Q19 also regressed to 2/5, which is inconsistent with prior runs -- LLM-as-judge
 ### Decision
 
 Keep reranking in `rag.py` as it is -- it's the right architecture for production and will show value on larger corpora. The current eval corpus is too small to measure the benefit.
+
+---
+
+## Experiment 3 -- Hybrid Search + Reranking
+
+Config: `chunk_size=150, overlap=25, hybrid_search (BM25 + vector, RRF k=60), reranker top_n=5`
+
+```
+[1/20] When was the city of Rome traditionally founded?
+  Retrieval: pass  |  Answer score: 5/5
+[2/20] Who founded Rome according to tradition?
+  Retrieval: pass  |  Answer score: 4/5
+[3/20] What government system replaced the Roman Kingdom around 509 BC?
+  Retrieval: pass  |  Answer score: 4/5
+[4/20] What were the Punic Wars?
+  Retrieval: pass  |  Answer score: 5/5
+[5/20] What did Julius Caesar do after conquering Gaul?
+  Retrieval: pass  |  Answer score: 5/5
+[6/20] What is the primary cause of modern climate change described in the document?
+  Retrieval: pass  |  Answer score: 4/5
+[7/20] How much have average global temperatures risen since the Industrial Revolution?
+  Retrieval: pass  |  Answer score: 5/5
+[8/20] How fast is the Arctic warming compared with the rest of the planet?
+  Retrieval: pass  |  Answer score: 5/5
+[9/20] What brain areas activate when someone listens to music?
+  Retrieval: pass  |  Answer score: 4/5
+[10/20] Why can music be intensely pleasurable?
+  Retrieval: pass  |  Answer score: 4/5
+[11/20] Why is music therapy useful for dementia and Alzheimer's disease?
+  Retrieval: pass  |  Answer score: 5/5
+[12/20] What are macronutrients and what do they provide?
+  Retrieval: pass  |  Answer score: 5/5
+[13/20] Which plant proteins can be combined to provide all essential amino acids?
+  Retrieval: pass  |  Answer score: 5/5
+[14/20] Why is hydration important for the body?
+  Retrieval: pass  |  Answer score: 4/5
+[15/20] Who became the first human in space and when?
+  Retrieval: pass  |  Answer score: 4/5
+[16/20] How did the Roman Republic become the Roman Empire, and who became the first emperor?
+  Retrieval: pass  |  Answer score: 4/5
+[17/20] How does climate change threaten both coastal cities and marine biodiversity?
+  Retrieval: pass  |  Answer score: 4/5
+[18/20] What are two examples of human efforts to explore or live beyond Earth after the Apollo era?
+  Retrieval: pass  |  Answer score: 4/5
+[19/20] What is the capital city of France?
+  Retrieval: MISS  |  Answer score: 2/5
+[20/20] Who won the 2022 FIFA World Cup?
+  Retrieval: MISS  |  Answer score: 4/5
+
+--- Evaluation Results ---
+Retrieval recall:   18/20 (90%)
+Answer correctness: 4.3 / 5.0 average
+```
+
+### Observations
+
+Same result as reranking alone. Hybrid search merges BM25 keyword rankings with vector search rankings via RRF, but on a 23-chunk corpus both methods already surface the same chunks. There's no keyword-heavy query in the dataset (like error codes or product names) where BM25 would outperform vector search, so the merge produces no meaningful reordering.
+
+### Decision
+
+Keep hybrid search in place -- it's the right architecture and would show clear benefit on queries involving exact terms, codes, or abbreviations on a larger corpus.

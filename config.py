@@ -11,3 +11,6 @@ CHUNK_OVERLAP_LARGE = 100
 # Reranker config
 RERANKER_CANDIDATE_K = 20
 RERANKER_TOP_N = 5
+
+# Hybrid search config
+RRF_K = 60
