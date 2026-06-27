@@ -4,15 +4,16 @@ import chromadb
 client = chromadb.PersistentClient(path="./chroma_db")
 
 
-def search(query: str, top_k: int = 3) -> list[dict]:
-    collection = client.get_or_create_collection(name="documents")
-    query_vector = embed_query(query)
+def _query(collection, query_vector: list[float], top_k: int, filters: dict | None) -> list[dict]:
+    kwargs = {
+        "query_embeddings": [query_vector],
+        "n_results": top_k,
+        "include": ["documents", "metadatas", "distances"],
+    }
+    if filters:
+        kwargs["where"] = filters
 
-    results = collection.query(
-        query_embeddings = [query_vector],
-        n_results = top_k,
-        include = ["documents", "metadatas", "distances"]
-    )
+    results = collection.query(**kwargs)
 
     return [
         {
@@ -23,6 +24,19 @@ def search(query: str, top_k: int = 3) -> list[dict]:
         }
         for i in range(len(results["documents"][0]))
     ]
+
+
+def search(query: str, top_k: int = 3, filters: dict | None = None) -> list[dict]:
+    collection = client.get_or_create_collection(name="documents")
+    query_vector = embed_query(query)
+
+    chunks = _query(collection, query_vector, top_k, filters)
+
+    if filters and len(chunks) < 2:
+        print(f"[search] filtered results too few ({len(chunks)}), retrying without filter")
+        chunks = _query(collection, query_vector, top_k, filters=None)
+
+    return chunks
 
 
 def main():
