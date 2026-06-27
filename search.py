@@ -45,7 +45,7 @@ def main():
 
     print(f"Query: \"{query}\"\n")
     for i, result in enumerate(results):
-        print(f"Result {i + 1} (distance: {result['distance']:.4f}) — {result['source']} [chunk {result['chunk_index']}]")
+        print(f"Result {i + 1} (distance: {result['distance']:.4f}) | {result['source']} [chunk {result['chunk_index']}]")
         print(result["text"])
         print()
 

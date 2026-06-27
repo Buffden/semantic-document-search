@@ -85,7 +85,7 @@ def run_eval() -> None:
     retrieval_recall = sum(retrieval_scores)
     avg_answer = sum(answer_scores) / total
 
-    print(f"\n--- Evaluation Results ---")
+    print("\nEvaluation Results ---")
     print(f"Retrieval recall:   {retrieval_recall}/{total} ({100 * retrieval_recall // total}%)")
     print(f"Answer correctness: {avg_answer:.1f} / 5.0 average")
 
