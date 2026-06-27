@@ -1,0 +1,11 @@
+# Default
+CHUNK_SIZE = 300
+CHUNK_OVERLAP = 50
+
+# Experiment: small chunks
+CHUNK_SIZE_SMALL = 150
+CHUNK_OVERLAP_SMALL = 25
+
+# Experiment: large chunks
+CHUNK_SIZE_LARGE = 600
+CHUNK_OVERLAP_LARGE = 100
