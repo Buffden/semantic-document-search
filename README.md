@@ -17,8 +17,11 @@ A progressive RAG system built from first principles -- from raw embeddings and 
 ### Search
 
 1. **Embeds** the query using the same model
-2. **Queries** Chroma for the top-K nearest vectors using built-in ANN (Approximate Nearest Neighbor) search
-3. **Returns** results with chunk text, source filename, and distance score
+2. **Runs hybrid search** -- vector search via Chroma ANN and BM25 keyword search in parallel
+3. **Merges** both ranked lists using Reciprocal Rank Fusion (RRF, k=60)
+4. **Reranks** the merged candidates using a cross-encoder (`cross-encoder/ms-marco-MiniLM-L-6-v2`) for precise relevance scoring
+5. **Supports metadata filtering** -- optional `filters` dict narrows search to specific source files before retrieval, with automatic fallback to unfiltered if results are too few
+6. **Returns** top-5 reranked chunks with text, source filename, and chunk index
 
 ### Generation
 
@@ -38,6 +41,8 @@ A progressive RAG system built from first principles -- from raw embeddings and 
 - pymupdf (PDF parsing)
 - python-docx (DOCX parsing)
 - numpy (cosine similarity computation)
+- rank-bm25 (BM25 keyword search)
+- sentence-transformers (cross-encoder reranking)
 - python-dotenv
 
 ---
@@ -57,11 +62,18 @@ rag-document-engine/
 │   └── system_prompt.txt       # LLM system prompt (loaded at runtime)
 ├── embed.py                    # embed_chunks and embed_query utilities
 ├── ingest.py                   # CLI entry point - parse, chunk, embed, store
-├── search.py                   # Embed query + retrieve top-K from Chroma
+├── search.py                   # Embed query + retrieve top-K from Chroma (with optional metadata filter)
+├── hybrid_search.py            # BM25 + vector search merged via RRF
+├── rerank.py                   # Cross-encoder reranker on top of hybrid search candidates
 ├── generate.py                 # Token-budgeted answer generation via gpt-4o-mini
 ├── rag.py                      # End-to-end pipeline entry point
+├── config.py                   # Tuneable constants (chunk size, reranker K, RRF K)
 ├── inspect_collection.py       # Print collection stats and a sample entry
 ├── utils.py                    # chunk_text, load_document, load_documents
+├── eval/
+│   ├── golden_dataset.json     # 20 manually written Q&A pairs for evaluation
+│   ├── eval.py                 # Evaluation harness -- retrieval recall + LLM-as-judge scoring
+│   └── results.md              # Raw eval output and observations per experiment
 ├── chroma_db/                  # Chroma persistent storage (not committed)
 ├── diagrams/                   # Pipeline diagrams (SVG, generated via npx diagram-sync)
 ├── docs/                       # Phase notes, PlantUML source files, and docs index
@@ -163,7 +175,7 @@ Note: distance is an inverse similarity score -- lower means more relevant.
 | 2 | Vector Store | Complete |
 | 3 | RAG Pipeline | Complete |
 | 4 | Document Ingestion | Complete |
-| 5 | Retrieval Quality | Planned |
+| 5 | Retrieval Quality | Complete |
 | 6 | Search and Chat Mode | Planned |
 | 7 | Role-Based Document Access | Planned |
 
@@ -180,6 +192,9 @@ See [docs/implementation-plan.md](./docs/implementation-plan.md) for full phase 
 - **Vector database** -- stores embeddings with metadata and retrieves them by similarity using ANN search
 - **RAG** -- Retrieval-Augmented Generation: retrieve relevant context, then generate a grounded answer
 - **Document parsing** -- format-specific extraction that converts PDF, DOCX, and Markdown into plain text before chunking; all formats share the same embedding and storage flow after parsing
+- **Hybrid search** -- combines vector similarity (semantic) and BM25 (keyword) rankings; catches cases where exact terms matter that embeddings miss
+- **Reciprocal Rank Fusion** -- merges two ranked lists by summing 1/(k+rank) per item; chunks that rank high in both lists score highest
+- **Cross-encoder reranking** -- reads query and chunk together to score direct relevance; more accurate than cosine similarity, used as a second pass on a small candidate set
 
 ---
 
@@ -220,3 +235,7 @@ The ingestion flow is split into 4 focused diagrams - read in this order:
 **4. Upsert** - deduplication check, ChromaDB upsert with full payload
 
 ![Upsert](./diagrams/docs/pipeline-document-ingestion-upsert.svg)
+
+### Phase 5 -- Retrieval Quality (hybrid search, reranking, metadata filtering)
+
+![Retrieval Quality Pipeline](./diagrams/docs/pipeline-retrieval-quality.svg)

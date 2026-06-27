@@ -1,0 +1,74 @@
+@startuml pipeline-retrieval-quality
+
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontName Arial
+skinparam defaultFontSize 15
+skinparam sequenceArrowThickness 2
+skinparam SequenceBoxBackgroundColor #F8F9FF
+skinparam SequenceBoxBorderColor #AABBDD
+skinparam ParticipantBackgroundColor #EEF3FB
+skinparam ParticipantBorderColor #5577AA
+skinparam ParticipantFontColor #222222
+skinparam DatabaseBackgroundColor #FFF8E7
+skinparam DatabaseBorderColor #CC9900
+skinparam ActorBackgroundColor #F0FFF0
+skinparam ActorBorderColor #448844
+
+title Phase 5 -- Retrieval Quality (Hybrid Search + Reranking + Metadata Filtering)
+
+participant "hybrid_search.py" as hybrid
+participant "search.py" as search
+participant "embed.py" as embed
+participant "rerank.py" as reranker
+database "Chroma DB" as chroma
+participant "OpenAI API" as openai
+participant "BM25Okapi" as bm25
+participant "CrossEncoder" as crossencoder
+
+== Stage 1 -- Vector Search (with optional metadata filter) ==
+
+hybrid -> embed : embed_query(question)
+embed -> openai : embeddings.create()\ntext-embedding-3-small
+openai --> embed : query vector
+embed --> hybrid : query vector
+
+alt metadata filter provided
+  hybrid -> chroma : query(embeddings, n_results=20,\nwhere={"source": "file.txt"})
+  chroma --> hybrid : filtered top-20 chunks
+  hybrid -> hybrid : len(results) < 2?
+  alt too few results
+    hybrid -> chroma : retry without filter
+    chroma --> hybrid : unfiltered top-20 chunks
+  end
+else no filter
+  hybrid -> chroma : query(embeddings, n_results=20)
+  chroma --> hybrid : top-20 chunks by cosine similarity
+end
+
+== Stage 2 -- BM25 Keyword Search ==
+
+hybrid -> bm25 : BM25Okapi(tokenized corpus)
+hybrid -> bm25 : get_scores(tokenized question)
+bm25 --> hybrid : keyword relevance scores per chunk
+hybrid -> hybrid : rank chunks by BM25 score\nkeep top-20
+
+== Stage 3 -- RRF Merge ==
+
+hybrid -> hybrid : for each chunk in vector results:\n  score += 1 / (60 + rank)
+hybrid -> hybrid : for each chunk in BM25 results:\n  score += 1 / (60 + rank)
+hybrid -> hybrid : sort by combined RRF score\nreturn top-20 candidates
+
+== Stage 4 -- Cross-Encoder Reranking ==
+
+hybrid --> reranker : top-20 candidates
+reranker -> crossencoder : predict([(question, chunk_text)] x20)\ncross-encoder/ms-marco-MiniLM-L-6-v2
+crossencoder --> reranker : relevance scores
+reranker -> reranker : sort descending by score\nkeep top-5
+reranker --> hybrid : top-5 reranked chunks
+
+note over hybrid, reranker
+  Final output: 5 chunks ordered by cross-encoder relevance
+  ready to be passed to generate.py
+end note
+
+@enduml
