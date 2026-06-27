@@ -4,6 +4,7 @@ import chromadb
 from utils import chunk_text
 from embed import embed_chunks
 from ingest.router import parse, SUPPORTED_EXTENSIONS
+from config import CHUNK_SIZE_SMALL as CHUNK_SIZE, CHUNK_OVERLAP_SMALL as CHUNK_OVERLAP
 
 client = chromadb.PersistentClient(path = "./chroma_db")
 
@@ -11,7 +12,7 @@ client = chromadb.PersistentClient(path = "./chroma_db")
 def ingest_file(collection, filepath: str):
 	filename = Path(filepath).name
 	text = parse(filepath)
-	chunks = chunk_text(text)
+	chunks = chunk_text(text, chunk_size=CHUNK_SIZE, overlap=CHUNK_OVERLAP)
 	embedded = embed_chunks(chunks)
 
 	if collection.count() > 0:

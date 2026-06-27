@@ -1,8 +1,8 @@
 import sys
-from search import search
 from generate import generate_answer, NO_ANSWER_PHRASE
-
-TOP_K = 5
+from rerank import rerank
+from hybrid_search import hybrid_search
+from config import RERANKER_TOP_N
 
 
 def _print_result(result: dict) -> None:
@@ -17,12 +17,13 @@ def _print_result(result: dict) -> None:
 
 
 def run(question: str) -> None:
-	chunks = search(question, top_k = TOP_K)
+	candidates = hybrid_search(question, top_n = RERANKER_TOP_N * 4)
 
-	if not chunks:
+	if not candidates:
 		print("No documents found in the collection. Run ingest.py first.")
 		return
 
+	chunks = rerank(question, candidates, top_n = RERANKER_TOP_N)
 	result = generate_answer(question, chunks)
 
 	if result["answer"].strip() == NO_ANSWER_PHRASE:
